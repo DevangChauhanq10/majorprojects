@@ -13,7 +13,7 @@ export default clerkMiddleware(async (auth, req) => {
      await auth.protect();
   }
 
-  // Role verification (Authorization)
+  // Role verification (authorization)
   const role = sessionClaims?.metadata?.role;
 
   if (isAdminRoute(req) && role !== 'admin') {

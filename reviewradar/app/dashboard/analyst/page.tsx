@@ -1,44 +1,54 @@
-import { auth } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
+import { getFeedbackForAnalyst, getFeedbackStats, FeedbackFilter } from "@/app/actions/analyst";
+import { FeedbackFilters } from "@/components/analyst/feedback-filters";
+import { FeedbackTable } from "@/components/analyst/feedback-table";
+import { PaginationControls } from "@/components/analyst/pagination-controls";
+import { StatsCards } from "@/components/analyst/stats-cards";
+import { Metadata } from "next";
 
-export default async function AnalystDashboard() {
-  const { sessionClaims } = await auth();
+export const metadata: Metadata = {
+  title: "Analyst Dashboard | ReviewRadar",
+};
+
+export default async function AnalystDashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{
+    query?: string;
+    page?: string;
+    search?: string;
+    category?: string;
+    rating?: string;
+    sentiment?: string;
+    dateRange?: string;
+  }>
+}) {
+  const resolvedParams = await searchParams; 
+  const page = Number(resolvedParams?.page) || 1;
+  const limit = 10;
   
-  // Double check in component (optional, middleware handles it)
-  if (sessionClaims?.metadata.role !== 'analyst' && sessionClaims?.metadata.role !== 'admin') {
-    redirect('/');
-  }
+  const filters: FeedbackFilter = {
+      search: resolvedParams?.search,
+      category: resolvedParams?.category as any,
+      rating: resolvedParams?.rating,
+      sentiment: resolvedParams?.sentiment,
+      dateRange: resolvedParams?.dateRange,
+  };
+
+  const { feedback, totalPages } = await getFeedbackForAnalyst(page, limit, filters);
+  const stats = await getFeedbackStats();
 
   return (
-    <div className="max-w-6xl mx-auto space-y-6">
-      <div className="bg-white p-8 rounded-2xl shadow-sm border border-indigo-100">
-        <div className="flex justify-between items-start">
-            <div>
-                <h1 className="text-3xl font-bold text-slate-900 mb-2">Analyst Dashboard</h1>
-                <p className="text-slate-500">Analyze feedback trends and sentiment.</p>
-            </div>
-            <span className="px-3 py-1 bg-indigo-50 text-indigo-600 rounded-full text-xs font-semibold uppercase tracking-wider">
-                Analyst Access
-            </span>
-        </div>
+    <div className="flex-1 space-y-4 p-8 pt-6">
+      <div className="flex items-center justify-between space-y-2">
+        <h2 className="text-3xl font-bold tracking-tight">Analyst Dashboard</h2>
       </div>
-
-      <div className="grid md:grid-cols-3 gap-6">
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-            <h4 className="text-sm font-medium text-slate-400 uppercase tracking-wider mb-2">Total Feedback</h4>
-            <div className="text-4xl font-bold text-slate-900">1,248</div>
-            <div className="text-emerald-500 text-sm font-medium mt-1">↑ 12% vs last week</div>
-        </div>
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-            <h4 className="text-sm font-medium text-slate-400 uppercase tracking-wider mb-2">Pending Categorization</h4>
-            <div className="text-4xl font-bold text-slate-900">42</div>
-            <div className="text-amber-500 text-sm font-medium mt-1">Needs attention</div>
-        </div>
-         <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
-            <h4 className="text-sm font-medium text-slate-400 uppercase tracking-wider mb-2">Sentiment Score</h4>
-            <div className="text-4xl font-bold text-slate-900">8.4</div>
-            <div className="text-slate-400 text-sm font-medium mt-1">Positive trend</div>
-        </div>
+      
+      <StatsCards stats={stats} />
+      
+      <div className="space-y-4">
+          <FeedbackFilters />
+          <FeedbackTable feedback={feedback} />
+          <PaginationControls totalPages={totalPages} />
       </div>
     </div>
   );

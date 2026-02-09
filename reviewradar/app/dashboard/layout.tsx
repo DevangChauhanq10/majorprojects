@@ -12,8 +12,7 @@ export default async function DashboardLayout({
   const role = sessionClaims?.metadata.role;
 
   if (!role) {
-    // Ideally redirect to an onboarding page or show a "No Role Assigned" message
-    // For now, we'll just let them pass but they see no special links
+
   }
 
   return (
@@ -27,11 +26,6 @@ export default async function DashboardLayout({
              </span>
              
              <nav className="flex gap-4 text-sm text-slate-300">
-               {/* Base User Link - Everyone gets this? Or just 'user' role? */}
-               {/* Taking requirement: /dashboard/user is User Role Only (implies strictly User?) or Base Access? 
-                   Usually Admin/Analyst also have User access. I will allow all logged in users to see 'User Dashboard' link for now or stick to strict req if implied.
-                   Request said: /dashboard/user (User role only) - treating literally. 
-               */}
                {(role === 'user' || role === 'analyst' || role === 'admin') && (
                  <Link href="/dashboard/user" className="hover:text-white transition-colors">User View</Link>
                )}
@@ -39,7 +33,7 @@ export default async function DashboardLayout({
                {(role === 'analyst' || role === 'admin') && (
                  <Link href="/dashboard/analyst" className="hover:text-white transition-colors">Analyst View</Link>
                )}
-
+ 
                {role === 'admin' && (
                  <Link href="/dashboard/admin" className="hover:text-white transition-colors">Admin View</Link>
                )}

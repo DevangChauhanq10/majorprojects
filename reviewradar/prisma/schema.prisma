@@ -15,6 +15,11 @@ model Feedback {
   sentiment   String
   userId      String
   createdAt   DateTime @default(now())
+
+  @@index([category])
+  @@index([rating])
+  @@index([sentiment])
+  @@index([createdAt])
 }
 
 enum Category {

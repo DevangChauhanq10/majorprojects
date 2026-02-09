@@ -55,7 +55,7 @@ export async function createFeedback(prevState: FeedbackState, formData: FormDat
         description: validatedFields.data.description,
         category: validatedFields.data.category,
         rating: validatedFields.data.rating,
-        sentiment: "Pending", // Default, or calculate if we had an AI service
+        sentiment: "Pending", 
         userId: userId,
       },
     });
