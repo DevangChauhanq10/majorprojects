@@ -3,6 +3,7 @@ import { FeedbackFilters } from "@/components/analyst/feedback-filters";
 import { FeedbackTable } from "@/components/analyst/feedback-table";
 import { PaginationControls } from "@/components/analyst/pagination-controls";
 import { StatsCards } from "@/components/analyst/stats-cards";
+import { AiInsights } from "@/components/analyst/ai-insights";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -46,6 +47,7 @@ export default async function AnalystDashboardPage({
       <StatsCards stats={stats} />
       
       <div className="space-y-4">
+          <AiInsights filters={filters} />
           <FeedbackFilters />
           <FeedbackTable feedback={feedback} />
           <PaginationControls totalPages={totalPages} />

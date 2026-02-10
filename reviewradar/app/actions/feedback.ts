@@ -1,7 +1,7 @@
 'use server'
 
 import { auth } from "@clerk/nextjs/server";
-import { prisma } from "@/lib/prisma"; // Assuming prisma client is exported from here, if not I'll fix
+import { prisma } from "@/lib/prisma"; 
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
