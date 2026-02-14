@@ -1,6 +1,7 @@
 'use server'
 
-import { auth } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
+import { sendFeedbackConfirmation, sendCriticalAlert } from "@/app/actions/email";
 import { prisma } from "@/lib/prisma"; 
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
@@ -25,8 +26,9 @@ export type FeedbackState = {
 
 export async function createFeedback(prevState: FeedbackState, formData: FormData): Promise<FeedbackState> {
   const { userId } = await auth();
+  const user = await currentUser(); // Get full user details for email
 
-  if (!userId) {
+  if (!userId || !user) {
     return {
       message: "You must be logged in to submit feedback.",
       success: false,
@@ -60,6 +62,33 @@ export async function createFeedback(prevState: FeedbackState, formData: FormDat
       },
     });
 
+    // 1. Send Confirmation Email to User
+    const userEmail = user.emailAddresses[0]?.emailAddress;
+    if (userEmail) {
+      await sendFeedbackConfirmation(
+        userEmail,
+        user.firstName || "User",
+        validatedFields.data.title,
+        validatedFields.data.category
+      );
+    }
+
+    // 2. Check for Critical Alert Condition (Admin)
+    // Condition: 3+ ratings of 1-2 stars in last 24 hours
+    const oneDayAgo = new Date();
+    oneDayAgo.setDate(oneDayAgo.getDate() - 1);
+
+    const recentCriticalFeedbackCount = await prisma.feedback.count({
+      where: {
+        rating: { in: [1, 2] },
+        createdAt: { gte: oneDayAgo },
+      },
+    });
+
+    if (recentCriticalFeedbackCount >= 3) {
+      await sendCriticalAlert(recentCriticalFeedbackCount);
+    }
+
     revalidatePath('/dashboard/user');
     return {
       message: "Feedback submitted successfully!",
@@ -73,3 +102,4 @@ export async function createFeedback(prevState: FeedbackState, formData: FormDat
     };
   }
 }
+

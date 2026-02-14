@@ -27,7 +27,9 @@ export async function getFeedbackForAnalyst(
   const skip = (page - 1) * limit;
 
  
-  const where: any = {};
+  const where: any = {
+    deleted: false
+  };
 
   if (filters.search) {
     where.OR = [
@@ -78,9 +80,10 @@ export async function getFeedbackStats() {
     throw new Error("Unauthorized");
   }
 
-  const total = await prisma.feedback.count();
+  const total = await prisma.feedback.count({ where: { deleted: false } });
   
   const avgRatingAgg = await prisma.feedback.aggregate({
+    where: { deleted: false },
     _avg: { rating: true },
   });
   const avgRating = avgRatingAgg._avg.rating || 0;

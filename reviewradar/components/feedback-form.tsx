@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState } from 'react'; // React 19 hook (Next.js 15+)
+import { useActionState } from 'react'; 
 import { createFeedback } from "@/app/actions/feedback";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

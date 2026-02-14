@@ -16,11 +16,20 @@ model Feedback {
   sentiment   String
   userId      String
   createdAt   DateTime @default(now())
+  deleted     Boolean  @default(false)
 
   @@index([category])
   @@index([rating])
   @@index([sentiment])
   @@index([createdAt])
+}
+
+model ActivityLog {
+  id        Int      @id @default(autoincrement())
+  action    String
+  details   String?
+  userId    String
+  createdAt DateTime @default(now())
 }
 
 enum Category {
