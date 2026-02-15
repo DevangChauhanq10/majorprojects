@@ -1,5 +1,23 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## ReviewRadar 📊
+
+## 🎯 Live Demo
+
+**[Try ReviewRadar Live](https://reviewradar.vercel.app)**
+
+### Demo Accounts
+
+To explore all features, use these pre-configured accounts:
+
+| Role | Email | Password | Features |
+|------|-------|----------|----------|
+| 👤 **User** | `demo-user@reviewradar.com` | `Demo123!!` | Submit feedback, view submissions |
+| 📊 **Analyst** | `demo-analyst@reviewradar.com` | `Demo123!!` | View all feedback, **AI insights**, analytics |
+| 👑 **Admin** | `demo-admin@reviewradar.com` | `Demo123!!` | User management, all features |
+
+> **Tip:** Try the **Analyst** account to see the AI-powered insights feature! 🤖
+
 ## Getting Started
 
 First, run the development server:
