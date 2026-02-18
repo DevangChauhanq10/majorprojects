@@ -4,7 +4,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## 🎯 Live Demo
 
-**[Try ReviewRadar Live](https://reviewradar.vercel.app)**
+
 
 ### Demo Accounts
 
