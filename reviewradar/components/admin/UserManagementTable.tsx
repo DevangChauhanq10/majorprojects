@@ -37,16 +37,8 @@ export function UserManagementTable({ users }: { users: UserData[] }) {
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
+      <CardHeader>
         <CardTitle>User Management ({users.length})</CardTitle>
-        <a 
-          href="https://dashboard.clerk.com" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="text-xs text-muted-foreground hover:text-primary underline"
-        >
-          Manage Roles in Clerk
-        </a>
       </CardHeader>
       <CardContent>
         <div className="rounded-md border">

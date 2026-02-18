@@ -4,7 +4,6 @@ import { FeedbackTable } from "@/components/analyst/feedback-table";
 import { PaginationControls } from "@/components/analyst/pagination-controls";
 import { StatsCards } from "@/components/analyst/stats-cards";
 import { AiInsights } from "@/components/analyst/ai-insights";
-import { SendDigestButton } from "@/components/analyst/send-digest-button";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -40,14 +39,9 @@ export default async function AnalystDashboardPage({
   const stats = await getFeedbackStats();
 
   return (
-    <div className="flex-1 space-y-4 p-8 pt-6">
+    <div className="flex-1 space-y-4 p-8 pt-6 dark min-h-screen bg-[#0a0a0a] text-white">
       <div className="flex items-center justify-between space-y-2">
         <h2 className="text-3xl font-bold tracking-tight">Analyst Dashboard</h2>
-        <SendDigestButton stats={{ 
-          total: stats.total, 
-          topCategory: String(stats.mostCommonCategory), 
-          avgRating: stats.avgRating 
-        }} email="analyst@example.com" />
       </div>
       
       <StatsCards stats={stats} />

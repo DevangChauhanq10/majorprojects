@@ -76,21 +76,21 @@ export default function Home() {
            <div className="grid md:grid-cols-3 gap-6">
               <DemoAccountCard
                 role="user"
-                email="demo-user@reviewradar.com"
-                pass="Demo123!!"
+                email="dccule+demouser@gmail.com"
+                pass="ReviewRadar2025!"
                 features={["Submit feedback", "Track status", "View public roadmap"]}
               />
               <DemoAccountCard
                 role="analyst"
-                email="demo-analyst@reviewradar.com"
-                pass="Demo123!!"
+                email="dccule+demoanalyst@gmail.com"
+                pass="ReviewRadar2025!"
                 features={["View all feedback", "AI insights", "Export reports"]}
                 highlighted={true}
               />
               <DemoAccountCard
                 role="admin"
-                email="demo-admin@reviewradar.com"
-                pass="Demo123!!"
+                email="dccule+demoadmin@gmail.com"
+                pass="ReviewRadar2025!"
                 features={["Manage users", "Content moderation", "System settings"]}
               />
            </div>

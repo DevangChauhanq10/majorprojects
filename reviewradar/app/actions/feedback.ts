@@ -10,7 +10,7 @@ const feedbackSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(10, "Description must be at least 10 characters"),
   category: z.enum(["Bug", "Feature", "UX", "Performance", "Other"]),
-  rating: z.coerce.number().min(1).max(5).default(0),
+  rating: z.coerce.number().min(0).max(5).default(0),
 });
 
 export type FeedbackState = {

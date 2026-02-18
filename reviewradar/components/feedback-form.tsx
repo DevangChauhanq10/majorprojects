@@ -102,6 +102,9 @@ export function FeedbackForm() {
               ))}
             </div>
             <input type="hidden" name="rating" value={rating || 0} />
+            {state?.errors?.rating && (
+              <p className="text-sm text-red-500 mt-1">{state.errors.rating[0]}</p>
+            )}
           </div>
 
           <div className="pt-4">

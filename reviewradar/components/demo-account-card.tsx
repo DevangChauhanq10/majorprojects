@@ -1,11 +1,10 @@
-"use client";
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { SignInButton, useUser } from "@clerk/nextjs";
+import { SignInButton, useUser, useClerk } from "@clerk/nextjs";
 import { Check, Copy, ExternalLink, Shield, BarChart2, User, KeyRound, Mail } from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 interface DemoAccountCardProps {
@@ -42,9 +41,40 @@ const roleConfig = {
 };
 
 export function DemoAccountCard({ role, email, pass, features, highlighted }: DemoAccountCardProps) {
-  const { user } = useUser();
+  const { user, isLoaded } = useUser();
+  const clerk = useClerk();
+  const router = useRouter();
   const [copied, setCopied] = useState(false);
   const config = roleConfig[role];
+
+  // Auto-assign role if logged in with demo account
+  useEffect(() => {
+    if (!isLoaded || !user) return;
+    
+    // Check if current user email matches this card's email
+    const userEmail = user.primaryEmailAddress?.emailAddress;
+    if (userEmail === email) {
+      const currentRole = user.publicMetadata?.role;
+      
+      // If role mismatch (e.g., analyst logged in but has 'user' role), fix it
+      if (currentRole !== role && role !== 'user') {
+        const syncRole = async () => {
+          try {
+            await fetch("/api/setup-role", { 
+                method: "POST",
+                body: JSON.stringify({ role }),
+            });
+            await user.reload();
+            toast.success(`Role synced to ${role}! Redirecting...`);
+            router.refresh(); // Refresh to update middleware state
+          } catch (error) {
+            console.error("Failed to sync role", error);
+          }
+        };
+        syncRole();
+      }
+    }
+  }, [isLoaded, user, email, role, router]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(email); // For simplicity, just copying email first as password is standard
@@ -57,6 +87,18 @@ export function DemoAccountCard({ role, email, pass, features, highlighted }: De
     navigator.clipboard.writeText(pass);
     toast.success("Password copied to clipboard!");
   }
+
+  const roleRaw = user?.publicMetadata?.role as string | undefined;
+  const currentRole = roleRaw || "user"; // Default to user if no role set
+  
+  // Access Logic:
+  // - Admin can access everything
+  // - Analyst can access Analyst & User
+  // - User can only access User
+  const hasAccess = 
+    currentRole === "admin" || 
+    (currentRole === "analyst" && role !== "admin") ||
+    (currentRole === "user" && role === "user");
 
   return (
     <div className={cn(
@@ -121,22 +163,34 @@ export function DemoAccountCard({ role, email, pass, features, highlighted }: De
             </Button>
             
             {!user ? (
-              <SignInButton mode="modal">
-                  <Button className={cn("w-full transition-colors", config.btnColor)} onClick={() => {
-                     navigator.clipboard.writeText(email);
-                     toast.success("Email copied! Password: " + pass, { duration: 4000 });
-                  }}>
+              <SignInButton mode="modal" forceRedirectUrl={`/dashboard/${role}`}>
+                  <Button className={cn("w-full transition-colors", config.btnColor)}>
                       Sign In as {role.charAt(0).toUpperCase() + role.slice(1)}
                       <ExternalLink className="ml-2 h-4 w-4" />
                   </Button>
               </SignInButton>
+            ) : !hasAccess ? (
+               <Button 
+                  className={cn("w-full transition-colors", config.btnColor)} 
+                  onClick={() => {
+                     navigator.clipboard.writeText(email);
+                     toast.success("Email copied! redirected to sign-in...", { duration: 3000 });
+                     // Sign out and redirect to login
+                     setTimeout(() => {
+                        clerk.signOut({ redirectUrl: '/' });
+                     }, 1000);
+                  }}
+                >
+                  Switch Account to Access
+                  <ExternalLink className="ml-2 h-4 w-4" />
+               </Button>
             ) : (
-              <Link href={`/dashboard/${role}`} className="w-full">
-                  <Button className={cn("w-full transition-colors", config.btnColor)}>
+              <Button asChild className={cn("w-full transition-colors", config.btnColor)}>
+                  <Link href={`/dashboard/${role}`}>
                       Go to {role.charAt(0).toUpperCase() + role.slice(1)} Dashboard
                       <ExternalLink className="ml-2 h-4 w-4" />
-                  </Button>
-              </Link>
+                  </Link>
+              </Button>
             )}
         </div>
       </div>
