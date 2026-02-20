@@ -55,8 +55,7 @@ export function DemoAccountCard({ role, email, pass, features, highlighted }: De
     const userEmail = user.primaryEmailAddress?.emailAddress;
     if (userEmail === email) {
       const currentRole = user.publicMetadata?.role;
-      
-      // If role mismatch (e.g., analyst logged in but has 'user' role), fix it
+  
       if (currentRole !== role && role !== 'user') {
         const syncRole = async () => {
           try {
@@ -66,7 +65,7 @@ export function DemoAccountCard({ role, email, pass, features, highlighted }: De
             });
             await user.reload();
             toast.success(`Role synced to ${role}! Redirecting...`);
-            router.refresh(); // Refresh to update middleware state
+            router.refresh(); 
           } catch (error) {
             console.error("Failed to sync role", error);
           }
@@ -77,7 +76,7 @@ export function DemoAccountCard({ role, email, pass, features, highlighted }: De
   }, [isLoaded, user, email, role, router]);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(email); // For simplicity, just copying email first as password is standard
+    navigator.clipboard.writeText(email); 
     toast.success("Email copied to clipboard!");
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -89,15 +88,13 @@ export function DemoAccountCard({ role, email, pass, features, highlighted }: De
   }
 
   const roleRaw = user?.publicMetadata?.role as string | undefined;
-  const currentRole = roleRaw || "user"; // Default to user if no role set
+  const currentRole = roleRaw || "user"; 
   
-  // Access Logic:
   // - Admin can access everything
-  // - Analyst can access Analyst & User
-  // - User can only access User
+
   const hasAccess = 
     currentRole === "admin" || 
-    (currentRole === "analyst" && role !== "admin") ||
+    (currentRole === "analyst" && role === "analyst") ||
     (currentRole === "user" && role === "user");
 
   return (
@@ -163,7 +160,7 @@ export function DemoAccountCard({ role, email, pass, features, highlighted }: De
             </Button>
             
             {!user ? (
-              <SignInButton mode="modal" forceRedirectUrl={`/dashboard/${role}`}>
+              <SignInButton mode="modal" fallbackRedirectUrl={`/dashboard/${role}`} initialValues={{ emailAddress: email }}>
                   <Button className={cn("w-full transition-colors", config.btnColor)}>
                       Sign In as {role.charAt(0).toUpperCase() + role.slice(1)}
                       <ExternalLink className="ml-2 h-4 w-4" />
@@ -173,8 +170,7 @@ export function DemoAccountCard({ role, email, pass, features, highlighted }: De
                <Button 
                   className={cn("w-full transition-colors", config.btnColor)} 
                   onClick={() => {
-                     navigator.clipboard.writeText(email);
-                     toast.success("Email copied! redirected to sign-in...", { duration: 3000 });
+                     toast.success("Signing out...", { duration: 3000 });
                      // Sign out and redirect to login
                      setTimeout(() => {
                         clerk.signOut({ redirectUrl: '/' });

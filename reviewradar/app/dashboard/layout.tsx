@@ -28,7 +28,7 @@ export default async function DashboardLayout({
              </Link>
              
              <nav className="flex items-center gap-6 text-sm font-medium">
-               {(role === 'user' || role === 'analyst' || role === 'admin') && (
+               {(role === 'user' || role === 'admin') && (
                  <Link href="/dashboard/user" className="text-gray-400 hover:text-white transition-colors">User</Link>
                )}
                

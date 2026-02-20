@@ -24,8 +24,9 @@ export default clerkMiddleware(async (auth, req) => {
     return NextResponse.redirect(new URL('/', req.url));
   }
 
-  // Users can access their own route, but technically anyone with a role implies 'user' access or better
-  // If you want strict 'user' only: if (isUserRoute(req) && !role) ...
+  if (isUserRoute(req) && role === 'analyst') {
+     return NextResponse.redirect(new URL('/', req.url));
+  }
 });
 
 export const config = {

@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Separator } from "@/components/ui/separator";
-import { Brain, Sparkles, Loader2, AlertTriangle, RefreshCcw, Download, CheckCircle2 } from "lucide-react";
+import { Brain, Lightbulb, Loader2, AlertTriangle, RefreshCcw, Download, CheckCircle2, BarChart } from "lucide-react";
 import { toast } from "sonner";
 
 interface InsightsData {
@@ -77,11 +77,11 @@ export function AiInsights({ filters }: AiInsightsProps) {
 
   if (!insights && !loading) {
     return (
-      <Card className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-950/20 dark:to-purple-950/20 border-indigo-100 dark:border-indigo-900">
+      <Card className="border border-border bg-card">
         <CardContent className="flex items-center justify-between p-6">
           <div className="space-y-1">
             <h3 className="font-semibold text-lg flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+              <Lightbulb className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
               AI Insights Generator
             </h3>
             <p className="text-sm text-muted-foreground">
@@ -119,12 +119,12 @@ export function AiInsights({ filters }: AiInsightsProps) {
   }
 
   return (
-    <Card className="border-indigo-100 dark:border-indigo-900 shadow-sm overflow-hidden">
-      <CardHeader className="bg-indigo-50/50 dark:bg-indigo-950/20 border-b border-indigo-100 dark:border-indigo-900 pb-4">
+    <Card className="border-border shadow-sm overflow-hidden bg-card">
+      <CardHeader className="border-b border-border pb-4 bg-muted/20">
         <div className="flex items-center justify-between">
           <div className="space-y-1">
-            <CardTitle className="flex items-center gap-2 text-xl text-indigo-950 dark:text-indigo-50">
-              <Sparkles className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+            <CardTitle className="flex items-center gap-2 text-xl text-foreground">
+              <Lightbulb className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
               AI-Generated Insights
             </CardTitle>
             <CardDescription>
@@ -178,21 +178,21 @@ export function AiInsights({ filters }: AiInsightsProps) {
         <div className="grid md:grid-cols-2 gap-8">
             {/* Top Issues */}
             <div className="space-y-4">
-                <h4 className="font-semibold text-sm uppercase tracking-wider text-red-600 dark:text-red-400 flex items-center gap-2">
-                    <AlertTriangle className="h-4 w-4" /> Top Issues
+                <h4 className="font-semibold text-sm uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                    <AlertTriangle className="h-4 w-4 text-orange-500" /> Top Issues
                 </h4>
                 <div className="space-y-3">
                     {insights?.topIssues.map((issue, i) => (
-                        <div key={i} className="flex gap-3 items-start bg-red-50 dark:bg-red-950/10 p-3 rounded-lg border border-red-100 dark:border-red-900/30">
-                            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-red-100 text-xs font-bold text-red-600 dark:bg-red-900 dark:text-red-300">
+                        <div key={i} className="flex gap-3 items-start bg-card p-3 rounded-lg border border-border border-l-2 border-l-orange-500 shadow-sm">
+                            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-orange-100 dark:bg-orange-950/30 text-xs font-bold text-orange-600 dark:text-orange-400">
                                 {i + 1}
                             </span>
                             <div>
                                 <div className="flex items-center gap-2 mb-1">
-                                    <span className="font-medium text-red-900 dark:text-red-200">{issue.issue}</span>
-                                    <Badge variant="secondary" className="text-xs bg-red-200 text-red-800 hover:bg-red-200">{issue.frequency}</Badge>
+                                    <span className="font-medium text-foreground">{issue.issue}</span>
+                                    <Badge variant="secondary" className="text-xs">{issue.frequency}</Badge>
                                 </div>
-                                <p className="text-sm text-red-700 dark:text-red-400/80 leading-relaxed">{issue.description}</p>
+                                <p className="text-sm text-muted-foreground leading-relaxed">{issue.description}</p>
                             </div>
                         </div>
                     ))}
@@ -201,21 +201,21 @@ export function AiInsights({ filters }: AiInsightsProps) {
 
             {/* Feature Requests */}
             <div className="space-y-4">
-                <h4 className="font-semibold text-sm uppercase tracking-wider text-blue-600 dark:text-blue-400 flex items-center gap-2">
-                    <Sparkles className="h-4 w-4" /> Top Requests
+                <h4 className="font-semibold text-sm uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                    <Lightbulb className="h-4 w-4 text-blue-500" /> Top Requests
                 </h4>
                  <div className="space-y-3">
                     {insights?.featureRequests.map((req, i) => (
-                        <div key={i} className="flex gap-3 items-start bg-blue-50 dark:bg-blue-950/10 p-3 rounded-lg border border-blue-100 dark:border-blue-900/30">
-                            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-100 text-xs font-bold text-blue-600 dark:bg-blue-900 dark:text-blue-300">
+                        <div key={i} className="flex gap-3 items-start bg-card p-3 rounded-lg border border-border border-l-2 border-l-blue-500 shadow-sm">
+                            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-950/30 text-xs font-bold text-blue-600 dark:text-blue-400">
                                 {i + 1}
                             </span>
                             <div className="w-full">
                                 <div className="flex items-center justify-between mb-1">
-                                    <span className="font-medium text-blue-900 dark:text-blue-200">{req.feature}</span>
+                                    <span className="font-medium text-foreground">{req.feature}</span>
                                     <Badge className={`${getPriorityColor(req.priority)} text-white`}>{req.priority}</Badge>
                                 </div>
-                                <div className="flex items-center gap-2 text-xs text-blue-700 dark:text-blue-400/80">
+                                <div className="flex items-center gap-2 text-xs text-muted-foreground">
                                     <span>{req.mentions} mentions</span>
                                 </div>
                             </div>
@@ -230,21 +230,23 @@ export function AiInsights({ filters }: AiInsightsProps) {
             {/* Added check for non-empty array before rendering this section */}
             <div className="space-y-4">
                 <Separator />
-                <h4 className="font-semibold text-sm uppercase tracking-wider text-destructive flex items-center gap-2">
-                    <AlertTriangle className="h-4 w-4" /> Critical Attention Needed
+                <h4 className="font-semibold text-sm uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                    <AlertTriangle className="h-4 w-4 text-red-500" /> Critical Attention Needed
                 </h4>
-                <div className="grid gap-3">
+                <div className="space-y-3">
                     {insights.criticalBugs.map((bug, i) => (
-                        <Alert key={i} variant="destructive" className="bg-red-50 border-red-200 dark:bg-red-950/20 dark:border-red-900">
-                            <AlertTriangle className="h-4 w-4" />
-                            <AlertTitle className="flex items-center gap-2">
-                                {bug.bug}
-                                <Badge variant="destructive" className="text-[10px] h-5 px-1.5 uppercase">{bug.severity}</Badge>
-                            </AlertTitle>
-                            <AlertDescription>
-                                {bug.description}
-                            </AlertDescription>
-                        </Alert>
+                        <div key={i} className="flex gap-3 items-start bg-card p-3 rounded-lg border border-border border-l-2 border-l-red-500 shadow-sm">
+                            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-red-100 dark:bg-red-950/30 text-xs font-bold text-red-600 dark:text-red-400">
+                                {i + 1}
+                            </span>
+                            <div className="w-full">
+                                <div className="flex items-center justify-between mb-1">
+                                    <span className="font-medium text-foreground">{bug.bug}</span>
+                                    <Badge variant="destructive" className="text-[10px] h-5 px-1.5 uppercase">{bug.severity}</Badge>
+                                </div>
+                                <p className="text-sm text-muted-foreground leading-relaxed">{bug.description}</p>
+                            </div>
+                        </div>
                     ))}
                 </div>
             </div>
@@ -255,23 +257,23 @@ export function AiInsights({ filters }: AiInsightsProps) {
 
         {/* Recommended Actions */}
         <div className="space-y-4">
-           <h4 className="font-semibold text-sm uppercase tracking-wider text-emerald-600 dark:text-emerald-400 flex items-center gap-2">
-                <CheckCircle2 className="h-4 w-4" /> Recommended Actions
+           <h4 className="font-semibold text-sm uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 text-emerald-500" /> Recommended Actions
             </h4>
             <div className="grid sm:grid-cols-2 gap-4">
                 {insights?.recommendedActions.map((action, i) => (
-                    <Card key={i} className="border-emerald-100 dark:border-emerald-900 bg-emerald-50/30 dark:bg-emerald-950/10 shadow-none">
+                    <Card key={i} className="bg-card shadow-sm border-border border-t-2 border-t-emerald-500">
                         <CardContent className="p-4 flex flex-col h-full justify-between">
                             <div className="mb-2">
                                 <div className="flex justify-between items-start mb-2">
-                                    <Badge variant="outline" className="border-emerald-200 text-emerald-700 dark:border-emerald-800 dark:text-emerald-400">
+                                    <Badge variant="outline" className="border-border text-foreground">
                                         {action.priority} Priority
                                     </Badge>
-                                    <span className="text-xs font-medium text-emerald-600 dark:text-emerald-500">
+                                    <span className="text-xs font-medium text-muted-foreground">
                                         Impact: {action.impactedMetric}
                                     </span>
                                 </div>
-                                <p className="text-sm font-medium text-emerald-950 dark:text-emerald-50 leading-relaxed">
+                                <p className="text-sm font-medium text-foreground leading-relaxed mt-3">
                                     {action.action}
                                 </p>
                             </div>
