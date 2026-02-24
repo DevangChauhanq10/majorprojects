@@ -81,16 +81,15 @@ export function AiInsights({ filters }: AiInsightsProps) {
         <CardContent className="flex items-center justify-between p-6">
           <div className="space-y-1">
             <h3 className="font-semibold text-lg flex items-center gap-2">
-              <Lightbulb className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
-              AI Insights Generator
+              <BarChart className="h-5 w-5 text-muted-foreground" />
+              Intelligence Report
             </h3>
             <p className="text-sm text-muted-foreground">
-              Analyze current feedback filters to discover trends, issues, and actionable recommendations.
+              Compile current feedback data into actionable analytics and trends.
             </p>
           </div>
-          <Button onClick={handleGenerateValues} size="lg" className="bg-indigo-600 hover:bg-indigo-700 text-white">
-            <Brain className="mr-2 h-4 w-4" />
-            Generate Insights
+          <Button onClick={handleGenerateValues} size="lg" variant="secondary">
+            Generate Report
           </Button>
         </CardContent>
       </Card>
@@ -99,18 +98,13 @@ export function AiInsights({ filters }: AiInsightsProps) {
 
   if (loading) {
     return (
-      <Card className="border-indigo-100 dark:border-indigo-900">
+      <Card className="border border-border">
         <CardContent className="py-12 flex flex-col items-center justify-center space-y-4">
-          <div className="relative">
-            <div className="absolute inset-0 bg-indigo-500/20 rounded-full animate-ping" />
-            <div className="bg-indigo-100 dark:bg-indigo-900/50 p-4 rounded-full relative">
-              <Loader2 className="h-8 w-8 text-indigo-600 dark:text-indigo-400 animate-spin" />
-            </div>
-          </div>
+          <Loader2 className="h-6 w-6 text-muted-foreground animate-spin" />
           <div className="text-center space-y-1">
-            <h3 className="font-semibold text-lg">Analyzing Feedback...</h3>
-            <p className="text-sm text-muted-foreground max-w-xs mx-auto">
-              Our AI is crunching the numbers, identifying patterns, and extracting meaningful insights.
+            <h3 className="font-medium text-sm">Processing Data</h3>
+            <p className="text-xs text-muted-foreground max-w-xs mx-auto">
+              Compiling insights report...
             </p>
           </div>
         </CardContent>
@@ -119,20 +113,20 @@ export function AiInsights({ filters }: AiInsightsProps) {
   }
 
   return (
-    <Card className="border-border shadow-sm overflow-hidden bg-card">
-      <CardHeader className="border-b border-border pb-4 bg-muted/20">
+    <Card className="border-border shadow-sm overflow-hidden bg-card print:bg-white print:text-black">
+      <CardHeader className="border-b border-border pb-4 bg-muted/10 print:bg-transparent print:border-b-2 print:border-black">
         <div className="flex items-center justify-between">
           <div className="space-y-1">
-            <CardTitle className="flex items-center gap-2 text-xl text-foreground">
-              <Lightbulb className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
-              AI-Generated Insights
+            <CardTitle className="flex items-center gap-2 text-xl font-semibold text-foreground print:text-black">
+              <BarChart className="h-5 w-5 text-muted-foreground print:text-black" />
+              Executive Intelligence Report
             </CardTitle>
-            <CardDescription>
-              Analysis based on your current filters • Generated on {lastGenerated?.toLocaleTimeString()}
+            <CardDescription className="print:text-slate-600">
+              Analysis based on current feedback filters • {lastGenerated?.toLocaleTimeString()}
             </CardDescription>
           </div>
-          <div className="flex gap-2">
-             <Button variant="outline" size="sm" onClick={() => window.print()}>
+          <div className="flex gap-2 print:hidden">
+            <Button variant="outline" size="sm" onClick={() => window.print()}>
               <Download className="mr-2 h-4 w-4" />
               Export
             </Button>
@@ -144,56 +138,48 @@ export function AiInsights({ filters }: AiInsightsProps) {
         </div>
       </CardHeader>
       
-      <CardContent className="p-6 space-y-8">
+      <CardContent className="p-6 space-y-8 print:p-0 print:pt-6">
         {/* Sentiment Analysis */}
         <div className="space-y-4">
-          <h4 className="font-semibold text-sm uppercase tracking-wider text-muted-foreground">Sentiment Breakdown</h4>
-          <div className="space-y-3">
-             <div className="space-y-1">
-               <div className="flex justify-between text-sm">
-                 <span className="text-green-600 font-medium">Positive</span>
-                 <span className="font-bold">{insights?.sentimentBreakdown.positive}%</span>
-               </div>
-               <Progress value={insights?.sentimentBreakdown.positive} className="h-2 bg-green-100 dark:bg-green-950/30 [&>div]:bg-green-500" />
-             </div>
-             <div className="space-y-1">
-               <div className="flex justify-between text-sm">
-                 <span className="text-yellow-600 font-medium">Neutral</span>
-                 <span className="font-bold">{insights?.sentimentBreakdown.neutral}%</span>
-               </div>
-               <Progress value={insights?.sentimentBreakdown.neutral} className="h-2 bg-yellow-100 dark:bg-yellow-950/30 [&>div]:bg-yellow-500" />
-             </div>
-             <div className="space-y-1">
-               <div className="flex justify-between text-sm">
-                 <span className="text-red-600 font-medium">Negative</span>
-                 <span className="font-bold">{insights?.sentimentBreakdown.negative}%</span>
-               </div>
-               <Progress value={insights?.sentimentBreakdown.negative} className="h-2 bg-red-100 dark:bg-red-950/30 [&>div]:bg-red-500" />
-             </div>
+          <h4 className="font-medium text-sm text-foreground print:text-black">Sentiment Distribution</h4>
+          <div className="flex w-full h-3 rounded-full overflow-hidden bg-muted print:bg-slate-200">
+            <div 
+              style={{ width: `${insights?.sentimentBreakdown.positive}%` }} 
+              className="bg-emerald-500 transition-all duration-500 print:bg-emerald-600" 
+              title={`Positive: ${insights?.sentimentBreakdown.positive}%`}
+            />
+            <div 
+              style={{ width: `${insights?.sentimentBreakdown.neutral}%` }} 
+              className="bg-slate-400 transition-all duration-500 print:bg-slate-500" 
+              title={`Neutral: ${insights?.sentimentBreakdown.neutral}%`}
+            />
+            <div 
+              style={{ width: `${insights?.sentimentBreakdown.negative}%` }} 
+              className="bg-rose-500 transition-all duration-500 print:bg-rose-600" 
+              title={`Negative: ${insights?.sentimentBreakdown.negative}%`}
+            />
+          </div>
+          <div className="flex justify-between text-xs text-muted-foreground print:text-black font-medium">
+            <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-500 print:bg-emerald-600"/> Positive • {insights?.sentimentBreakdown.positive}%</span>
+            <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-slate-400 print:bg-slate-500"/> Neutral • {insights?.sentimentBreakdown.neutral}%</span>
+            <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-rose-500 print:bg-rose-600"/> Negative • {insights?.sentimentBreakdown.negative}%</span>
           </div>
         </div>
 
-        <Separator />
+        <Separator className="print:bg-black/20" />
 
         <div className="grid md:grid-cols-2 gap-8">
             {/* Top Issues */}
             <div className="space-y-4">
-                <h4 className="font-semibold text-sm uppercase tracking-wider text-muted-foreground flex items-center gap-2">
-                    <AlertTriangle className="h-4 w-4 text-orange-500" /> Top Issues
-                </h4>
+                <h4 className="font-medium text-sm text-foreground">Emerging Issues</h4>
                 <div className="space-y-3">
                     {insights?.topIssues.map((issue, i) => (
-                        <div key={i} className="flex gap-3 items-start bg-card p-3 rounded-lg border border-border border-l-2 border-l-orange-500 shadow-sm">
-                            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-orange-100 dark:bg-orange-950/30 text-xs font-bold text-orange-600 dark:text-orange-400">
-                                {i + 1}
-                            </span>
-                            <div>
-                                <div className="flex items-center gap-2 mb-1">
-                                    <span className="font-medium text-foreground">{issue.issue}</span>
-                                    <Badge variant="secondary" className="text-xs">{issue.frequency}</Badge>
-                                </div>
-                                <p className="text-sm text-muted-foreground leading-relaxed">{issue.description}</p>
+                        <div key={i} className="group relative pl-4 border-l-2 border-muted hover:border-foreground transition-colors py-1">
+                            <div className="flex items-center justify-between mb-1">
+                                <span className="font-medium text-sm text-foreground print:text-black">{issue.issue}</span>
+                                <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-sm print:text-black print:border print:border-black/20">{issue.frequency} Impact</span>
                             </div>
+                            <p className="text-sm text-muted-foreground leading-relaxed print:text-slate-800">{issue.description}</p>
                         </div>
                     ))}
                 </div>
@@ -201,23 +187,21 @@ export function AiInsights({ filters }: AiInsightsProps) {
 
             {/* Feature Requests */}
             <div className="space-y-4">
-                <h4 className="font-semibold text-sm uppercase tracking-wider text-muted-foreground flex items-center gap-2">
-                    <Lightbulb className="h-4 w-4 text-blue-500" /> Top Requests
-                </h4>
+                <h4 className="font-medium text-sm text-foreground print:text-black">Top Requested Features</h4>
                  <div className="space-y-3">
                     {insights?.featureRequests.map((req, i) => (
-                        <div key={i} className="flex gap-3 items-start bg-card p-3 rounded-lg border border-border border-l-2 border-l-blue-500 shadow-sm">
-                            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-950/30 text-xs font-bold text-blue-600 dark:text-blue-400">
-                                {i + 1}
-                            </span>
-                            <div className="w-full">
-                                <div className="flex items-center justify-between mb-1">
-                                    <span className="font-medium text-foreground">{req.feature}</span>
-                                    <Badge className={`${getPriorityColor(req.priority)} text-white`}>{req.priority}</Badge>
+                        <div key={i} className="group relative pl-4 border-l-2 border-muted hover:border-foreground transition-colors py-1 print:border-slate-300">
+                            <div className="flex items-center justify-between mb-1">
+                                <span className="font-medium text-sm text-foreground print:text-black">{req.feature}</span>
+                                <div className="flex items-center gap-2">
+                                  <span className="text-xs text-muted-foreground print:text-slate-700">{req.mentions} reqs</span>
                                 </div>
-                                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                                    <span>{req.mentions} mentions</span>
-                                </div>
+                            </div>
+                            <div className="w-full bg-muted/50 rounded-full h-1.5 mt-2">
+                               <div 
+                                className={`h-1.5 rounded-full ${req.priority.toLowerCase() === 'high' ? 'bg-foreground' : req.priority.toLowerCase() === 'medium' ? 'bg-muted-foreground' : 'bg-muted-foreground/50'}`} 
+                                style={{ width: req.priority.toLowerCase() === 'high' ? '100%' : req.priority.toLowerCase() === 'medium' ? '60%' : '30%' }}
+                               />
                             </div>
                         </div>
                     ))}
@@ -227,25 +211,19 @@ export function AiInsights({ filters }: AiInsightsProps) {
         
         {insights?.criticalBugs && insights.criticalBugs.length > 0 && (
             <>
-            {/* Added check for non-empty array before rendering this section */}
+            <Separator className="print:bg-black/20" />
             <div className="space-y-4">
-                <Separator />
-                <h4 className="font-semibold text-sm uppercase tracking-wider text-muted-foreground flex items-center gap-2">
-                    <AlertTriangle className="h-4 w-4 text-red-500" /> Critical Attention Needed
+                <h4 className="font-medium text-sm text-rose-500 flex items-center gap-2">
+                    Critical System Failures
                 </h4>
                 <div className="space-y-3">
                     {insights.criticalBugs.map((bug, i) => (
-                        <div key={i} className="flex gap-3 items-start bg-card p-3 rounded-lg border border-border border-l-2 border-l-red-500 shadow-sm">
-                            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-red-100 dark:bg-red-950/30 text-xs font-bold text-red-600 dark:text-red-400">
-                                {i + 1}
-                            </span>
-                            <div className="w-full">
-                                <div className="flex items-center justify-between mb-1">
-                                    <span className="font-medium text-foreground">{bug.bug}</span>
-                                    <Badge variant="destructive" className="text-[10px] h-5 px-1.5 uppercase">{bug.severity}</Badge>
-                                </div>
-                                <p className="text-sm text-muted-foreground leading-relaxed">{bug.description}</p>
+                        <div key={i} className="flex flex-col gap-1 p-3 bg-rose-500/5 border border-rose-500/20 rounded-md print:border-rose-300 print:bg-white">
+                            <div className="flex items-center justify-between">
+                                <span className="font-medium text-sm text-foreground print:text-black">{bug.bug}</span>
+                                <span className="text-[10px] font-semibold tracking-wider text-rose-500 uppercase print:text-rose-700">{bug.severity}</span>
                             </div>
+                            <p className="text-sm text-muted-foreground print:text-slate-800">{bug.description}</p>
                         </div>
                     ))}
                 </div>
@@ -253,33 +231,40 @@ export function AiInsights({ filters }: AiInsightsProps) {
             </>
         )}
 
-        <Separator />
+        <Separator className="print:bg-black/20" />
 
         {/* Recommended Actions */}
-        <div className="space-y-4">
-           <h4 className="font-semibold text-sm uppercase tracking-wider text-muted-foreground flex items-center gap-2">
-                <CheckCircle2 className="h-4 w-4 text-emerald-500" /> Recommended Actions
+        <div className="space-y-4 flex flex-col pt-2">
+           <h4 className="font-medium text-sm text-foreground print:text-black">
+                Suggested Actions
             </h4>
-            <div className="grid sm:grid-cols-2 gap-4">
-                {insights?.recommendedActions.map((action, i) => (
-                    <Card key={i} className="bg-card shadow-sm border-border border-t-2 border-t-emerald-500">
-                        <CardContent className="p-4 flex flex-col h-full justify-between">
-                            <div className="mb-2">
-                                <div className="flex justify-between items-start mb-2">
-                                    <Badge variant="outline" className="border-border text-foreground">
-                                        {action.priority} Priority
-                                    </Badge>
-                                    <span className="text-xs font-medium text-muted-foreground">
-                                        Impact: {action.impactedMetric}
-                                    </span>
-                                </div>
-                                <p className="text-sm font-medium text-foreground leading-relaxed mt-3">
-                                    {action.action}
-                                </p>
-                            </div>
-                        </CardContent>
-                    </Card>
-                ))}
+            <div className="overflow-x-auto">
+               <table className="w-full text-sm text-left print:border print:border-collapse">
+                  <thead className="text-xs text-muted-foreground bg-muted/50 print:bg-transparent print:border-b print:border-black/20 print:text-black print:font-bold">
+                     <tr>
+                        <th className="px-4 py-2 font-medium rounded-tl-md print:border print:border-black/20">Action Items</th>
+                        <th className="px-4 py-2 font-medium print:border print:border-black/20">Impact Area</th>
+                        <th className="px-4 py-2 font-medium rounded-tr-md print:border print:border-black/20">Priority</th>
+                     </tr>
+                  </thead>
+                  <tbody className="divide-y divide-border print:divide-black/20">
+                    {insights?.recommendedActions.map((action, i) => (
+                        <tr key={i} className="hover:bg-muted/10 transition-colors print:border-b print:border-black/20">
+                            <td className="px-4 py-3 font-medium text-foreground print:text-black print:border-r print:border-black/20">{action.action}</td>
+                            <td className="px-4 py-3 text-muted-foreground print:text-slate-800 print:border-r print:border-black/20">{action.impactedMetric}</td>
+                            <td className="px-4 py-3">
+                               <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
+                                    action.priority.toLowerCase() === 'high' ? 'bg-foreground text-background print:bg-black print:text-white print:px-2' : 
+                                    action.priority.toLowerCase() === 'medium' ? 'bg-muted text-foreground print:bg-white print:text-black print:border print:border-black' : 
+                                    'bg-transparent border border-muted text-muted-foreground print:text-black print:border-black/30'
+                               }`}>
+                                 {action.priority}
+                               </span>
+                            </td>
+                        </tr>
+                    ))}
+                  </tbody>
+               </table>
             </div>
         </div>
 

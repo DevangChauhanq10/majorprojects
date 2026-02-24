@@ -75,13 +75,21 @@ export async function generateAIInsights(filters: FeedbackFilter = {}) {
   ).join("\n");
 
   const prompt = `
-    You are a product analyst. Analyze this customer feedback data and provide actionable intelligence.
+    You are a Senior Product Analyst for ReviewRadar. Analyze this customer feedback data and provide an executive-level intelligence report.
     
     Total Feedback Entries: ${totalCount}
     Average Rating: ${avgRating.toFixed(2)}
 
     Feedback Data:
     ${feedbackText}
+
+    CRITICAL TONE REQUIREMENTS:
+    - Write as an objective, data-driven professional.
+    - NEVER use AI filler phrases (e.g., "Based on the data provided," "It seems that," "Users are saying," "I recommend").
+    - Use concise, direct language and business terminology.
+    - Focus strictly on impact and urgency.
+    - Keep descriptions tight (1-2 short sentences max).
+    - For recommendations, start with strong action verbs (Implement, Optimize, Investigate).
 
     Please provide the following insights in valid JSON format:
 
@@ -91,9 +99,9 @@ export async function generateAIInsights(filters: FeedbackFilter = {}) {
        - negative: approximate percentage (number)
     
     2. topIssues: Array of objects with:
-       - issue: string (concise title)
+       - issue: string (concise title, e.g., "Authentication Latency")
        - frequency: string (e.g., "High", "Medium", "Low" or estimated count)
-       - description: string (brief explanation)
+       - description: string (brief, objective explanation, e.g., "Login times exceed 3s threshold during peak traffic.")
 
     3. featureRequests: Array of objects with:
        - feature: string (concise title)
@@ -103,10 +111,10 @@ export async function generateAIInsights(filters: FeedbackFilter = {}) {
     4. criticalBugs: Array of objects with:
        - bug: string (concise title)
        - severity: string ("Critical", "High")
-       - description: string
+       - description: string (tight explanation of the failure mode)
 
     5. recommendedActions: Array of objects with:
-       - action: string (actionable recommendation)
+       - action: string (actionable recommendation starting with a verb)
        - priority: string ("High", "Medium", "Low")
        - impactedMetric: string (e.g., "User Retention", "NPS", "Stability")
 

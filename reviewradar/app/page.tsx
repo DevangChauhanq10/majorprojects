@@ -38,8 +38,7 @@ export default function Home() {
             </h1>
             
             <p className="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
-              A robust feedback management system built to demonstrate modern web architecture. 
-              Features role-based access control, AI-powered sentiment analysis, and real-time data visualization.
+              Collect, analyze, and act on customer feedback — all in one place. ReviewRadar gives you AI-powered sentiment analysis, role-based team access, real-time dashboards, and automated insights so you never miss what your customers are really saying.
             </p>
 
             <div className="flex flex-wrap justify-center gap-2 mt-4 opacity-80">

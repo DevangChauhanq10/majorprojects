@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Trash2, Loader2 } from "lucide-react";
 import { format } from "date-fns";
-import { deleteFeedback } from "@/app/actions/admin";
+import { deleteFeedback, toggleFeedbackResolved } from "@/app/actions/admin";
 import { toast } from "sonner";
 
 type Feedback = {
@@ -37,6 +37,7 @@ type Feedback = {
   sentiment: string;
   createdAt: Date;
   deleted: boolean;
+  resolved: boolean;
   userId: string;
 };
 
@@ -47,6 +48,22 @@ export function FeedbackModeration({
 }) {
   const [feedbackList, setFeedbackList] = useState(initialFeedback);
   const [isDeleting, setIsDeleting] = useState<number | null>(null);
+  const [isToggling, setIsToggling] = useState<number | null>(null);
+
+  const handleToggleResolved = async (id: number, currentStatus: boolean) => {
+    setIsToggling(id);
+    try {
+      await toggleFeedbackResolved(id, currentStatus);
+      setFeedbackList((prev) =>
+        prev.map((f) => (f.id === id ? { ...f, resolved: !currentStatus } : f))
+      );
+      toast.success(`Marked as ${!currentStatus ? 'Resolved' : 'Unresolved'}`);
+    } catch (error) {
+      toast.error("Failed to update status");
+    } finally {
+      setIsToggling(null);
+    }
+  };
 
   const handleDelete = async (id: number) => {
     setIsDeleting(id);
@@ -61,16 +78,7 @@ export function FeedbackModeration({
     }
   };
 
-  const getSentimentColor = (sentiment: string) => {
-    switch (sentiment.toLowerCase()) {
-      case "positive":
-        return "bg-green-500 hover:bg-green-600";
-      case "negative":
-        return "bg-red-500 hover:bg-red-600";
-      default:
-        return "bg-gray-500 hover:bg-gray-600";
-    }
-  };
+  // getSentimentColor removed as Sentiment column is replaced
 
   return (
     <Card>
@@ -85,7 +93,7 @@ export function FeedbackModeration({
                 <TableHead>Title</TableHead>
                 <TableHead>Category</TableHead>
                 <TableHead>Rating</TableHead>
-                <TableHead>Sentiment</TableHead>
+                <TableHead>Status</TableHead>
                 <TableHead>Date</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
@@ -97,9 +105,22 @@ export function FeedbackModeration({
                   <TableCell>{item.category}</TableCell>
                   <TableCell>{item.rating}/5</TableCell>
                   <TableCell>
-                    <Badge className={getSentimentColor(item.sentiment)}>
-                      {item.sentiment}
-                    </Badge>
+                    <Button
+                      variant={item.resolved ? "outline" : "secondary"}
+                      size="sm"
+                      onClick={() => handleToggleResolved(item.id, item.resolved)}
+                      disabled={isToggling === item.id}
+                      className={`h-7 px-3 text-xs w-[120px] shadow-none ${
+                        item.resolved 
+                          ? "text-green-600 border-green-600/30 bg-green-50/50 hover:bg-green-100/50" 
+                          : "hover:bg-muted/80 text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      {isToggling === item.id && (
+                        <Loader2 className="h-3 w-3 animate-spin mr-1.5" />
+                      )}
+                      {item.resolved ? "✓ Resolved" : "Mark as Resolved"}
+                    </Button>
                   </TableCell>
                   <TableCell>
                     {format(new Date(item.createdAt), "MMM d, yyyy")}

@@ -24,14 +24,22 @@ export async function getUsers() {
 
 
   const feedbackCounts = await prisma.feedback.groupBy({
-    by: ["userId"],
+    by: ["userId", "category"],
     _count: {
       id: true,
     },
   });
 
-  const countMap = new Map();
-  feedbackCounts.forEach((f) => countMap.set(f.userId, f._count.id));
+  const countMap = new Map<string, number>();
+  const categoryMap = new Map<string, string[]>();
+
+  feedbackCounts.forEach((f) => {
+    countMap.set(f.userId, (countMap.get(f.userId) || 0) + f._count.id);
+    const existingCategories = categoryMap.get(f.userId) || [];
+    if (!existingCategories.includes(f.category)) {
+      categoryMap.set(f.userId, [...existingCategories, f.category]);
+    }
+  });
 
   return users.data.map((user) => ({
     id: user.id,
@@ -41,7 +49,48 @@ export async function getUsers() {
     role: user.publicMetadata.role || "user",
     createdAt: user.createdAt,
     feedbackCount: countMap.get(user.id) || 0,
+    categories: categoryMap.get(user.id) || [],
   }));
+}
+
+export async function updateUserRole(targetUserId: string, newRole: string) {
+  const adminId = await ensureAdmin();
+
+  const client = await clerkClient();
+  await client.users.updateUserMetadata(targetUserId, {
+    publicMetadata: {
+      role: newRole,
+    }
+  });
+
+  await prisma.activityLog.create({
+    data: {
+      action: "UPDATE_USER_ROLE",
+      details: `Updated role of user ${targetUserId} to ${newRole}`,
+      userId: adminId,
+    },
+  });
+
+  revalidatePath("/dashboard/admin");
+}
+
+export async function toggleFeedbackResolved(feedbackId: number, currentStatus: boolean) {
+  const adminId = await ensureAdmin();
+
+  await prisma.feedback.update({
+    where: { id: feedbackId },
+    data: { resolved: !currentStatus },
+  });
+
+  await prisma.activityLog.create({
+    data: {
+      action: "TOGGLE_FEEDBACK_RESOLVED",
+      details: `${!currentStatus ? 'Resolved' : 'Unresolved'} feedback ID: ${feedbackId}`,
+      userId: adminId,
+    },
+  });
+
+  revalidatePath("/dashboard/admin");
 }
 
 export async function deleteFeedback(feedbackId: number) {

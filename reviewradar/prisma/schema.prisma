@@ -17,6 +17,7 @@ model Feedback {
   userId      String
   createdAt   DateTime @default(now())
   deleted     Boolean  @default(false)
+  resolved    Boolean  @default(false)
 
   @@index([category])
   @@index([rating])
