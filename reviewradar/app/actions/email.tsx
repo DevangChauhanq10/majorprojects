@@ -1,14 +1,10 @@
-'use server';
-
 import { resend } from "@/lib/resend";
 import FeedbackConfirmation from "@/components/emails/feedback-confirmation";
 import WeeklyDigest from "@/components/emails/weekly-digest";
 import CriticalAlert from "@/components/emails/critical-alert";
 import { render } from "@react-email/render";
 
-// Helper to determine from address
-// In production, this should be a verified domain like 'notifications@reviewradar.com'
-// For testing/development without a domain, Resend requires 'onboarding@resend.dev'
+
 const FROM_EMAIL = process.env.NODE_ENV === 'production' 
   ? 'ReviewRadar <notifications@reviewradar.com>' 
   : 'ReviewRadar <onboarding@resend.dev>';

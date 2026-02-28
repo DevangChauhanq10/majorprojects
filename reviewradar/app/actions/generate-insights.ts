@@ -2,7 +2,7 @@
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { prisma } from "@/lib/prisma";
-import { FeedbackFilter } from "./analyst";
+import { FeedbackFilter, FeedbackFilterSchema } from "@/lib/validations";
 import { auth } from "@clerk/nextjs/server";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
@@ -15,34 +15,38 @@ export async function generateAIInsights(filters: FeedbackFilter = {}) {
     throw new Error("Unauthorized");
   }
 
+  // Validate filters
+  const parsedFilters = FeedbackFilterSchema.safeParse(filters);
+  const safeFilters = parsedFilters.success ? parsedFilters.data : {};
+
   // 1. Fetch Filtered Feedback
   const where: any = {};
 
-  if (filters.search) {
+  if (safeFilters.search) {
     where.OR = [
-      { title: { contains: filters.search, mode: 'insensitive' } },
-      { description: { contains: filters.search, mode: 'insensitive' } },
+      { title: { contains: safeFilters.search, mode: 'insensitive' } },
+      { description: { contains: safeFilters.search, mode: 'insensitive' } },
     ];
   }
 
-  if (filters.category && filters.category !== "All") {
-    where.category = filters.category;
+  if (safeFilters.category && safeFilters.category !== "All") {
+    where.category = safeFilters.category;
   }
 
-  if (filters.rating && filters.rating !== "All") {
-    where.rating = parseInt(filters.rating);
+  if (safeFilters.rating && safeFilters.rating !== "All") {
+    where.rating = parseInt(safeFilters.rating);
   }
 
-  if (filters.sentiment && filters.sentiment !== "All") {
-    where.sentiment = filters.sentiment;
+  if (safeFilters.sentiment && safeFilters.sentiment !== "All") {
+    where.sentiment = safeFilters.sentiment;
   }
 
-  if (filters.dateRange && filters.dateRange !== "All") {
+  if (safeFilters.dateRange && safeFilters.dateRange !== "All") {
     const now = new Date();
     let date = new Date();
-    if (filters.dateRange === "7d") date.setDate(now.getDate() - 7);
-    if (filters.dateRange === "30d") date.setDate(now.getDate() - 30);
-    if (filters.dateRange === "90d") date.setDate(now.getDate() - 90);
+    if (safeFilters.dateRange === "7d") date.setDate(now.getDate() - 7);
+    if (safeFilters.dateRange === "30d") date.setDate(now.getDate() - 30);
+    if (safeFilters.dateRange === "90d") date.setDate(now.getDate() - 90);
     where.createdAt = { gte: date };
   }
 
@@ -64,11 +68,11 @@ export async function generateAIInsights(filters: FeedbackFilter = {}) {
     throw new Error("No feedback found to analyze.");
   }
 
-  // 2. Aggregate Data (Optional, but helpful for context)
+  
   const totalCount = feedback.length;
   const avgRating = feedback.reduce((acc: number, curr: { rating: number }) => acc + curr.rating, 0) / totalCount;
 
-  // 3. Construct Prompt
+  // 2. Construct Prompt
 
   const feedbackText = feedback.map((f: { category: string; rating: number; title: string; description: string }) => 
     `- [${f.category}] (${f.rating} stars) ${f.title}: ${f.description}`
@@ -106,7 +110,7 @@ export async function generateAIInsights(filters: FeedbackFilter = {}) {
     3. featureRequests: Array of objects with:
        - feature: string (concise title)
        - priority: string ("High", "Medium", "Low")
-       - mentions: number (estimated count)
+       - description: string (a short, single line explaining why it is requested)
 
     4. criticalBugs: Array of objects with:
        - bug: string (concise title)
@@ -122,7 +126,7 @@ export async function generateAIInsights(filters: FeedbackFilter = {}) {
   `;
 
   try {
-    // 4. Call Gemini API
+    // 3. Call Gemini API
     const model = genAI.getGenerativeModel({ 
       model: "gemini-2.5-flash",
       generationConfig: {

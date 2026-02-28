@@ -51,6 +51,23 @@ export async function createFeedback(prevState: FeedbackState, formData: FormDat
   }
 
   try {
+    // Basic rate limit check
+    const oneHourAgo = new Date();
+    oneHourAgo.setHours(oneHourAgo.getHours() - 1);
+    const recentSubmissionsCount = await prisma.feedback.count({
+      where: {
+        userId: userId,
+        createdAt: { gte: oneHourAgo }
+      }
+    });
+
+    if (recentSubmissionsCount >= 5) {
+        return {
+          message: "You have reached the feedback submission limit for this hour. Please try again later.",
+          success: false,
+        };
+    }
+
     await prisma.feedback.create({
       data: {
         title: validatedFields.data.title,
@@ -86,7 +103,24 @@ export async function createFeedback(prevState: FeedbackState, formData: FormDat
     });
 
     if (recentCriticalFeedbackCount >= 3) {
-      await sendCriticalAlert(recentCriticalFeedbackCount);
+      // Check if an alert was already sent recently to prevent spam
+      const recentAlertCount = await prisma.activityLog.count({
+         where: {
+             action: "CRITICAL_ALERT_SENT",
+             createdAt: { gte: oneHourAgo }
+         }
+      });
+      
+      if (recentAlertCount === 0) {
+          await sendCriticalAlert(recentCriticalFeedbackCount);
+          await prisma.activityLog.create({
+            data: {
+              action: "CRITICAL_ALERT_SENT",
+              details: `Sent critical alert for ${recentCriticalFeedbackCount} negative feedbacks`,
+              userId: "SYSTEM",
+            },
+          });
+      }
     }
 
     revalidatePath('/dashboard/user');

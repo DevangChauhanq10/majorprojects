@@ -119,7 +119,7 @@ export function FeedbackModeration({
                       {isToggling === item.id && (
                         <Loader2 className="h-3 w-3 animate-spin mr-1.5" />
                       )}
-                      {item.resolved ? "✓ Resolved" : "Mark as Resolved"}
+                      {item.resolved ? "Resolved" : "Mark as Resolved"}
                     </Button>
                   </TableCell>
                   <TableCell>

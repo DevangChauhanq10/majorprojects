@@ -17,7 +17,7 @@ import * as React from "react";
 interface WeeklyDigestProps {
   totalFeedback: number;
   topCategory: string;
-  averageRating: string; // Formatted as string for display
+  averageRating: string; 
 }
 
 export default function WeeklyDigest({

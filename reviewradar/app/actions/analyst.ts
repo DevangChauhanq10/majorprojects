@@ -3,14 +3,8 @@
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 import { Category, Feedback } from "@prisma/client";
-
-export type FeedbackFilter = {
-  search?: string;
-  category?: Category | "All";
-  rating?: string; 
-  sentiment?: string; 
-  dateRange?: string; 
-};
+import { z } from "zod";
+import { FeedbackFilter, FeedbackFilterSchema } from "@/lib/validations";
 
 export async function getFeedbackForAnalyst(
   page: number = 1,
@@ -26,36 +20,39 @@ export async function getFeedbackForAnalyst(
 
   const skip = (page - 1) * limit;
 
- 
+  // Validate filters
+  const parsedFilters = FeedbackFilterSchema.safeParse(filters);
+  const safeFilters = parsedFilters.success ? parsedFilters.data : {};
+
   const where: any = {
     deleted: false
   };
 
-  if (filters.search) {
+  if (safeFilters.search) {
     where.OR = [
-      { title: { contains: filters.search, mode: 'insensitive' } },
-      { description: { contains: filters.search, mode: 'insensitive' } },
+      { title: { contains: safeFilters.search, mode: 'insensitive' } },
+      { description: { contains: safeFilters.search, mode: 'insensitive' } },
     ];
   }
 
-  if (filters.category && filters.category !== "All") {
-    where.category = filters.category;
+  if (safeFilters.category && safeFilters.category !== "All") {
+    where.category = safeFilters.category;
   }
 
-  if (filters.rating && filters.rating !== "All") {
-    where.rating = parseInt(filters.rating);
+  if (safeFilters.rating && safeFilters.rating !== "All") {
+    where.rating = parseInt(safeFilters.rating);
   }
 
-  if (filters.sentiment && filters.sentiment !== "All") {
-    where.sentiment = filters.sentiment;
+  if (safeFilters.sentiment && safeFilters.sentiment !== "All") {
+    where.sentiment = safeFilters.sentiment;
   }
 
-  if (filters.dateRange && filters.dateRange !== "All") {
+  if (safeFilters.dateRange && safeFilters.dateRange !== "All") {
     const now = new Date();
     let date = new Date();
-    if (filters.dateRange === "7d") date.setDate(now.getDate() - 7);
-    if (filters.dateRange === "30d") date.setDate(now.getDate() - 30);
-    if (filters.dateRange === "90d") date.setDate(now.getDate() - 90);
+    if (safeFilters.dateRange === "7d") date.setDate(now.getDate() - 7);
+    if (safeFilters.dateRange === "30d") date.setDate(now.getDate() - 30);
+    if (safeFilters.dateRange === "90d") date.setDate(now.getDate() - 90);
     where.createdAt = { gte: date };
   }
 
@@ -119,34 +116,37 @@ export async function exportFeedbackToCSV(filters: FeedbackFilter = {}) {
       throw new Error("Unauthorized");
     }
   
+    // Validate filters
+    const parsedFilters = FeedbackFilterSchema.safeParse(filters);
+    const safeFilters = parsedFilters.success ? parsedFilters.data : {};
     
     const where: any = {};
   
-    if (filters.search) {
+    if (safeFilters.search) {
       where.OR = [
-        { title: { contains: filters.search, mode: 'insensitive' } },
-        { description: { contains: filters.search, mode: 'insensitive' } },
+        { title: { contains: safeFilters.search, mode: 'insensitive' } },
+        { description: { contains: safeFilters.search, mode: 'insensitive' } },
       ];
     }
   
-    if (filters.category && filters.category !== "All") {
-      where.category = filters.category;
+    if (safeFilters.category && safeFilters.category !== "All") {
+      where.category = safeFilters.category;
     }
   
-    if (filters.rating && filters.rating !== "All") {
-      where.rating = parseInt(filters.rating);
+    if (safeFilters.rating && safeFilters.rating !== "All") {
+      where.rating = parseInt(safeFilters.rating);
     }
   
-    if (filters.sentiment && filters.sentiment !== "All") {
-      where.sentiment = filters.sentiment;
+    if (safeFilters.sentiment && safeFilters.sentiment !== "All") {
+      where.sentiment = safeFilters.sentiment;
     }
   
-    if (filters.dateRange && filters.dateRange !== "All") {
+    if (safeFilters.dateRange && safeFilters.dateRange !== "All") {
       const now = new Date();
       let date = new Date();
-      if (filters.dateRange === "7d") date.setDate(now.getDate() - 7);
-      if (filters.dateRange === "30d") date.setDate(now.getDate() - 30);
-      if (filters.dateRange === "90d") date.setDate(now.getDate() - 90);
+      if (safeFilters.dateRange === "7d") date.setDate(now.getDate() - 7);
+      if (safeFilters.dateRange === "30d") date.setDate(now.getDate() - 30);
+      if (safeFilters.dateRange === "90d") date.setDate(now.getDate() - 90);
       where.createdAt = { gte: date };
     }
   

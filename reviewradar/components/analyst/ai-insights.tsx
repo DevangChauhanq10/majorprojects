@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { generateAIInsights } from "@/app/actions/generate-insights";
-import { FeedbackFilter } from "@/app/actions/analyst";
+import { FeedbackFilter } from "@/lib/validations";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -26,7 +26,7 @@ interface InsightsData {
   featureRequests: {
     feature: string;
     priority: string;
-    mentions: number;
+    description: string;
   }[];
   criticalBugs: {
     bug: string;
@@ -193,10 +193,8 @@ export function AiInsights({ filters }: AiInsightsProps) {
                         <div key={i} className="group relative pl-4 border-l-2 border-muted hover:border-foreground transition-colors py-1 print:border-slate-300">
                             <div className="flex items-center justify-between mb-1">
                                 <span className="font-medium text-sm text-foreground print:text-black">{req.feature}</span>
-                                <div className="flex items-center gap-2">
-                                  <span className="text-xs text-muted-foreground print:text-slate-700">{req.mentions} reqs</span>
-                                </div>
                             </div>
+                            <p className="text-sm text-muted-foreground leading-relaxed print:text-slate-800">{req.description}</p>
                             <div className="w-full bg-muted/50 rounded-full h-1.5 mt-2">
                                <div 
                                 className={`h-1.5 rounded-full ${req.priority.toLowerCase() === 'high' ? 'bg-foreground' : req.priority.toLowerCase() === 'medium' ? 'bg-muted-foreground' : 'bg-muted-foreground/50'}`} 
