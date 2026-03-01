@@ -12,9 +12,9 @@ To explore all features, use these pre-configured accounts:
 
 | Role | Email | Password | Features |
 |------|-------|----------|----------|
-| 👤 **User** | `demo-user@reviewradar.com` | `Demo123!!` | Submit feedback, view submissions |
-| 📊 **Analyst** | `demo-analyst@reviewradar.com` | `Demo123!!` | View all feedback, **AI insights**, analytics |
-| 👑 **Admin** | `demo-admin@reviewradar.com` | `Demo123!!` | User management, all features |
+| 👤 **User** | `dccule+demouser@gmail.com` | `ReviewRadar2025!` | Submit feedback, view submissions |
+| 📊 **Analyst** | `dccule+demoanalyst@gmail.com` | `ReviewRadar2025!` | View all feedback, **AI insights**, analytics |
+| 👑 **Admin** | `dccule+demoadmin@gmail.com` | `ReviewRadar2025!` | User management, all features |
 
 > **Tip:** Try the **Analyst** account to see the AI-powered insights feature! 🤖
 
