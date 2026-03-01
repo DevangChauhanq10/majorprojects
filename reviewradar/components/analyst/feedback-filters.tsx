@@ -8,7 +8,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 import { exportFeedbackToCSV } from "@/app/actions/analyst";
 import { toast } from "sonner";
-import { FeedbackFilter } from "@/app/actions/analyst";
+import { FeedbackFilter } from "@/lib/validations";
 
 export function FeedbackFilters() {
   const searchParams = useSearchParams();

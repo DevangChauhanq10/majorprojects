@@ -1,4 +1,5 @@
-import { getFeedbackForAnalyst, getFeedbackStats, FeedbackFilter } from "@/app/actions/analyst";
+import { getFeedbackForAnalyst, getFeedbackStats } from "@/app/actions/analyst";
+import { FeedbackFilter } from "@/lib/validations";
 import { FeedbackFilters } from "@/components/analyst/feedback-filters";
 import { FeedbackTable } from "@/components/analyst/feedback-table";
 import { PaginationControls } from "@/components/analyst/pagination-controls";
