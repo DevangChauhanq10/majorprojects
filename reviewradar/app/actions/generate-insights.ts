@@ -71,6 +71,19 @@ export async function generateAIInsights(filters: FeedbackFilter = {}) {
   
   const totalCount = feedback.length;
   const avgRating = feedback.reduce((acc: number, curr: { rating: number }) => acc + curr.rating, 0) / totalCount;
+  
+  // Pre-calculate accurate sentiment distribution
+  const sentimentCounts = {
+    positive: feedback.filter((f: any) => f.sentiment === 'Positive').length,
+    neutral: feedback.filter((f: any) => f.sentiment === 'Neutral').length,
+    negative: feedback.filter((f: any) => f.sentiment === 'Negative').length,
+  };
+  
+  const actualDistribution = {
+    positive: Math.round((sentimentCounts.positive / totalCount) * 100) || 0,
+    neutral: Math.round((sentimentCounts.neutral / totalCount) * 100) || 0,
+    negative: Math.round((sentimentCounts.negative / totalCount) * 100) || 0,
+  };
 
   // 2. Construct Prompt
 
@@ -83,6 +96,7 @@ export async function generateAIInsights(filters: FeedbackFilter = {}) {
     
     Total Feedback Entries: ${totalCount}
     Average Rating: ${avgRating.toFixed(2)}
+    ACTUAL DATABASE SENTIMENT DISTRIBUTION: ${actualDistribution.positive}% Positive, ${actualDistribution.neutral}% Neutral, ${actualDistribution.negative}% Negative
 
     Feedback Data:
     ${feedbackText}
@@ -98,9 +112,10 @@ export async function generateAIInsights(filters: FeedbackFilter = {}) {
     Please provide the following insights in valid JSON format:
 
     1. sentimentBreakdown: 
-       - positive: approximate percentage (number)
-       - neutral: approximate percentage (number)
-       - negative: approximate percentage (number)
+       YOU MUST OUTPUT EXACTLY THESE NUMBERS FOR SENTIMENT:
+       - positive: ${actualDistribution.positive}
+       - neutral: ${actualDistribution.neutral}
+       - negative: ${actualDistribution.negative}
     
     2. topIssues: Array of objects with:
        - issue: string (concise title, e.g., "Authentication Latency")
@@ -121,6 +136,8 @@ export async function generateAIInsights(filters: FeedbackFilter = {}) {
        - action: string (actionable recommendation starting with a verb)
        - priority: string ("High", "Medium", "Low")
        - impactedMetric: string (e.g., "User Retention", "NPS", "Stability")
+
+    6. executiveSummary: string (A concise 2 to 4 line summary stating overall trends, dominant sentiment, and key categories of feedback. E.g., "Based on recent feedback, there is an increase in reports related to [category]. Most sentiments are [sentiment]...")
 
     Return ONLY the JSON object. Do not format it as a code block.
   `;

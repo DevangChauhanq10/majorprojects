@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import {
   Table,
@@ -38,10 +41,15 @@ export function FeedbackList({ feedbacks }: FeedbackListProps) {
               key={feedback.id} 
               className="border-b-[#222] last:border-0 hover:bg-[#1a1a1a]/50 transition-colors"
             >
-              <TableCell className="font-medium text-white">
-                {feedback.title}
+              <TableCell className="py-4">
+                <div className="font-medium text-white mb-1">
+                  {feedback.title}
+                </div>
+                <div className="text-sm text-gray-400 whitespace-pre-wrap">
+                  {feedback.description}
+                </div>
               </TableCell>
-              <TableCell>
+              <TableCell className="align-top py-4">
                 <Badge 
                   variant="outline" 
                   className={cn(
@@ -56,7 +64,7 @@ export function FeedbackList({ feedbacks }: FeedbackListProps) {
                   {feedback.category}
                 </Badge>
               </TableCell>
-              <TableCell className="text-gray-300">
+              <TableCell className="text-gray-300 align-top py-4">
                 {feedback.rating > 0 ? (
                   <div className="flex text-yellow-500">
                     {'★'.repeat(feedback.rating)}
@@ -66,15 +74,20 @@ export function FeedbackList({ feedbacks }: FeedbackListProps) {
                   <span className="text-gray-600">-</span>
                 )}
               </TableCell>
-              <TableCell className="text-gray-400">
+              <TableCell className="text-gray-400 align-top py-4">
                 {new Date(feedback.createdAt).toLocaleDateString()}
               </TableCell>
-              <TableCell className="text-right">
+              <TableCell className="text-right align-top py-4">
                  <Badge 
                   variant="outline" 
-                  className="bg-amber-500/10 text-amber-400 border-amber-500/20"
+                  className={cn(
+                    "border-0",
+                    feedback.resolved 
+                      ? "bg-emerald-500/10 text-emerald-500" 
+                      : "bg-amber-500/10 text-amber-500"
+                  )}
                 >
-                  Pending
+                  {feedback.resolved ? "Resolved" : "Pending"}
                 </Badge>
               </TableCell>
             </TableRow>

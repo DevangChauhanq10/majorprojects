@@ -5,6 +5,9 @@ import { sendFeedbackConfirmation, sendCriticalAlert } from "@/app/actions/email
 import { prisma } from "@/lib/prisma"; 
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
 const feedbackSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -68,13 +71,35 @@ export async function createFeedback(prevState: FeedbackState, formData: FormDat
         };
     }
 
+    // Analyze Sentiment
+    let sentiment = "Neutral"; // Default fallback
+    try {
+      const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+      const prompt = `
+        Analyze the following user feedback and determine its sentiment.
+        Title: "${validatedFields.data.title}"
+        Description: "${validatedFields.data.description}"
+
+        Respond ONLY with one of the following exact words: Positive, Neutral, Negative.
+      `;
+      const result = await model.generateContent(prompt);
+      const aiResponse = result.response.text().trim();
+      
+      if (['Positive', 'Neutral', 'Negative'].includes(aiResponse)) {
+        sentiment = aiResponse;
+      }
+    } catch (aiError) {
+      console.error("AI Sentiment Classification Failed:", aiError);
+      // Fails silently, falls back to "Neutral"
+    }
+
     await prisma.feedback.create({
       data: {
         title: validatedFields.data.title,
         description: validatedFields.data.description,
         category: validatedFields.data.category,
         rating: validatedFields.data.rating,
-        sentiment: "Pending", 
+        sentiment: sentiment, 
         userId: userId,
       },
     });

@@ -104,7 +104,7 @@ export function DemoAccountCard({ role, email, pass, features, highlighted }: De
     )}>
       {highlighted && (
         <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground shadow-sm">
-          Try AI Features
+          With AI Insights
         </div>
       )}
 

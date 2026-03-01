@@ -91,6 +91,7 @@ export async function toggleFeedbackResolved(feedbackId: number, currentStatus: 
   });
 
   revalidatePath("/dashboard/admin");
+  revalidatePath("/dashboard/user");
 }
 
 export async function deleteFeedback(feedbackId: number) {
@@ -110,6 +111,7 @@ export async function deleteFeedback(feedbackId: number) {
   });
 
   revalidatePath("/dashboard/admin");
+  revalidatePath("/dashboard/user");
 }
 
 export async function getSystemStats() {

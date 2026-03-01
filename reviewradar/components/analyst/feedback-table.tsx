@@ -68,22 +68,29 @@ export function FeedbackTable({ feedback }: FeedbackTableProps) {
                 className="cursor-pointer hover:bg-muted/50 transition-colors"
                 onClick={() => setSelectedFeedback(item)}
               >
-                <TableCell className="font-medium max-w-[200px] truncate" title={item.title}>
+                <TableCell className="font-medium max-w-[200px] truncate py-6" title={item.title}>
                     <div className="font-semibold">{item.title}</div>
-                    <div className="text-xs text-muted-foreground truncate">{item.description}</div>
                 </TableCell>
-                <TableCell>
+                <TableCell className="py-6">
                   <Badge variant="secondary">{item.category}</Badge>
                 </TableCell>
-                <TableCell>
+                <TableCell className="py-6">
                   <div className="flex">{getReviewStars(item.rating)}</div>
                 </TableCell>
-                <TableCell className="font-mono text-xs">{item.userId.slice(0, 15)}...</TableCell>
-                <TableCell className="whitespace-nowrap">
+                <TableCell className="font-mono text-xs py-6">{item.userId.slice(0, 15)}...</TableCell>
+                <TableCell className="whitespace-nowrap py-6">
                   {new Date(item.createdAt).toLocaleDateString()}
                 </TableCell>
-                <TableCell>
-                   <Badge variant={item.sentiment === 'Positive' ? 'default' : item.sentiment === 'Negative' ? 'destructive' : 'outline'}>
+                <TableCell className="py-6">
+                   <Badge 
+                      variant="outline" 
+                      className={
+                        item.sentiment === 'Positive' ? 'text-green-500 border-green-500 bg-green-500/10' : 
+                        item.sentiment === 'Negative' ? 'text-red-500 border-red-500 bg-red-500/10' : 
+                        item.sentiment === 'Neutral' ? 'text-blue-500 border-blue-500 bg-blue-500/10' : 
+                        'text-gray-500 border-gray-500 bg-gray-500/10'
+                      }
+                    >
                       {item.sentiment || 'N/A'}
                    </Badge>
                 </TableCell>
@@ -129,8 +136,16 @@ export function FeedbackTable({ feedback }: FeedbackTableProps) {
                 <div className="space-y-1">
                   <span className="text-muted-foreground font-medium text-xs uppercase tracking-wider">Sentiment</span>
                   <div>
-                     <Badge variant={selectedFeedback?.sentiment === 'Positive' ? 'default' : selectedFeedback?.sentiment === 'Negative' ? 'destructive' : 'outline'}>
-                        {selectedFeedback?.sentiment}
+                     <Badge 
+                        variant="outline"
+                        className={
+                          selectedFeedback?.sentiment === 'Positive' ? 'text-green-500 border-green-500 bg-green-500/10' : 
+                          selectedFeedback?.sentiment === 'Negative' ? 'text-red-500 border-red-500 bg-red-500/10' : 
+                          selectedFeedback?.sentiment === 'Neutral' ? 'text-blue-500 border-blue-500 bg-blue-500/10' : 
+                          'text-gray-500 border-gray-500 bg-gray-500/10'
+                        }
+                      >
+                        {selectedFeedback?.sentiment || 'N/A'}
                      </Badge>
                   </div>
                 </div>

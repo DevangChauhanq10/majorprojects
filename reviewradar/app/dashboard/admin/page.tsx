@@ -29,10 +29,13 @@ export default async function AdminDashboard() {
     totalFeedback: stats.totalFeedback,
     averageRating: stats.averageRating,
     totalUsers: users.length,
-    recentFeedback: feedbackList.slice(0, 5).map(f => ({
+    recentFeedback: feedbackList.map(f => ({
       id: f.id,
       title: f.title,
+      description: f.description,
       category: f.category,
+      rating: f.rating,
+      sentiment: f.sentiment,
       createdAt: f.createdAt
     }))
   };

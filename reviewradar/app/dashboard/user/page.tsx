@@ -22,11 +22,14 @@ export default async function UserDashboard() {
   });
 
   const pendingFeedback = await prisma.feedback.count({
-    where: { userId, sentiment: "Pending", deleted: false }
+    where: { userId, resolved: false, deleted: false }
   });
   
-  // Assuming non-pending are "resolved" or at least processed
-  const resolvedFeedback = totalFeedback - pendingFeedback;
+  const resolvedFeedback = await prisma.feedback.count({
+    where: { userId, resolved: true, deleted: false }
+  });
+  
+
 
   const stats = {
     total: totalFeedback,

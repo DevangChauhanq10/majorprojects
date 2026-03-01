@@ -42,7 +42,7 @@ export default function Home() {
             </p>
 
             <div className="flex flex-wrap justify-center gap-2 mt-4 opacity-80">
-               {["Next.js 14", "TypeScript", "Tailwind CSS", "Prisma", "PostgreSQL", "Clerk Auth", "Google Gemini AI"].map((tech) => (
+               {["Next.js 14", "TypeScript", "Tailwind CSS", "Prisma", "PostgreSQL", "Clerk Auth", "LLM Integration", "Google Gemini API"].map((tech) => (
                   <span key={tech} className="px-2 py-1 bg-secondary text-secondary-foreground rounded text-xs font-mono border border-secondary-foreground/20">
                     {tech}
                   </span>

@@ -13,6 +13,7 @@ import { Brain, Lightbulb, Loader2, AlertTriangle, RefreshCcw, Download, CheckCi
 import { toast } from "sonner";
 
 interface InsightsData {
+  executiveSummary: string;
   sentimentBreakdown: {
     positive: number;
     neutral: number;
@@ -139,6 +140,16 @@ export function AiInsights({ filters }: AiInsightsProps) {
       </CardHeader>
       
       <CardContent className="p-6 space-y-8 print:p-0 print:pt-6">
+        {/* Executive Summary */}
+        {insights?.executiveSummary && (
+          <div className="bg-[#0a0a0a]/30 rounded-lg p-4 border border-[#27272a] print:border-none print:p-0 print:bg-transparent">
+            <h4 className="font-medium text-sm text-foreground mb-2 print:text-black">Executive Summary</h4>
+            <p className="text-sm text-slate-300 leading-relaxed print:text-slate-800">
+              {insights.executiveSummary}
+            </p>
+          </div>
+        )}
+
         {/* Sentiment Analysis */}
         <div className="space-y-4">
           <h4 className="font-medium text-sm text-foreground print:text-black">Sentiment Distribution</h4>
