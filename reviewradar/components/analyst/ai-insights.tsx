@@ -76,6 +76,58 @@ export function AiInsights({ filters }: AiInsightsProps) {
     return "bg-blue-500 hover:bg-blue-600";
   };
 
+  const handleExportText = () => {
+    if (!insights) return;
+
+    let content = "EXECUTIVE INTELLIGENCE REPORT\n";
+    content += `Date: ${lastGenerated?.toLocaleString()}\n\n`;
+
+    if (insights.executiveSummary) {
+      content += "--- Executive Summary ---\n";
+      content += `${insights.executiveSummary}\n\n`;
+    }
+
+    content += "--- Sentiment Distribution ---\n";
+    content += `Positive: ${insights.sentimentBreakdown.positive}%\n`;
+    content += `Neutral: ${insights.sentimentBreakdown.neutral}%\n`;
+    content += `Negative: ${insights.sentimentBreakdown.negative}%\n\n`;
+
+    content += "--- Emerging Issues ---\n";
+    insights.topIssues.forEach(issue => {
+      content += `- ${issue.issue} (${issue.frequency} Impact)\n  ${issue.description}\n`;
+    });
+    content += "\n";
+
+    content += "--- Top Requested Features ---\n";
+    insights.featureRequests.forEach(req => {
+      content += `- ${req.feature} (Priority: ${req.priority})\n  ${req.description}\n`;
+    });
+    content += "\n";
+
+    if (insights.criticalBugs && insights.criticalBugs.length > 0) {
+      content += "--- Critical System Failures ---\n";
+      insights.criticalBugs.forEach(bug => {
+        content += `- [${bug.severity}] ${bug.bug}\n  ${bug.description}\n`;
+      });
+      content += "\n";
+    }
+
+    content += "--- Suggested Actions ---\n";
+    insights.recommendedActions.forEach(action => {
+      content += `- [${action.priority}] ${action.action} (Impacts: ${action.impactedMetric})\n`;
+    });
+
+    const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `intelligence-report-${new Date().toISOString().split('T')[0]}.txt`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   if (!insights && !loading) {
     return (
       <Card className="border border-border bg-card">
@@ -127,7 +179,7 @@ export function AiInsights({ filters }: AiInsightsProps) {
             </CardDescription>
           </div>
           <div className="flex gap-2 print:hidden">
-            <Button variant="outline" size="sm" onClick={() => window.print()}>
+            <Button variant="outline" size="sm" onClick={handleExportText}>
               <Download className="mr-2 h-4 w-4" />
               Export
             </Button>
