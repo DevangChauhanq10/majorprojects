@@ -50,11 +50,11 @@ export async function generateAIInsights(filters: FeedbackFilter = {}) {
     where.createdAt = { gte: date };
   }
 
-  // Limit to last 100 entries to avoid hitting token limits
+  // Limit to last 50 entries to avoid hitting token limits, timeouts, and memory issues
   const feedback = await prisma.feedback.findMany({
     where,
     orderBy: { createdAt: 'desc' },
-    take: 100,
+    take: 50,
     select: {
       category: true,
       rating: true,
