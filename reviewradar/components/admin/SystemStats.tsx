@@ -131,7 +131,7 @@ export function SystemStats({ stats }: { stats: Stats }) {
                      <p className="text-sm font-medium text-white truncate max-w-[400px]">{item.title}</p>
                      <div className="flex">{getReviewStars(item.rating)}</div>
                    </div>
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-slate-500" suppressHydrationWarning>
                     {new Date(item.createdAt).toLocaleDateString()} • {new Date(item.createdAt).toLocaleTimeString()}
                   </p>
                 </div>
@@ -172,7 +172,7 @@ export function SystemStats({ stats }: { stats: Stats }) {
         <DialogContent className="sm:max-w-[600px] border-[#27272a] bg-[#18181b] text-white overflow-y-auto max-h-[85vh]">
           <DialogHeader>
             <DialogTitle className="text-xl font-bold">{selectedFeedback?.title}</DialogTitle>
-            <DialogDescription className="text-slate-400">
+            <DialogDescription className="text-slate-400" suppressHydrationWarning>
               Submitted on {selectedFeedback && new Date(selectedFeedback.createdAt).toLocaleDateString()} at {selectedFeedback && new Date(selectedFeedback.createdAt).toLocaleTimeString()}
             </DialogDescription>
           </DialogHeader>

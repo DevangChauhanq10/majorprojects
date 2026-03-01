@@ -57,10 +57,10 @@ export function StatsCards({ stats }: StatsCardsProps) {
           <Clock className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">
+          <div className="text-2xl font-bold" suppressHydrationWarning>
             {stats.latestSubmission ? new Date(stats.latestSubmission).toLocaleDateString() : 'N/A'}
           </div>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs text-muted-foreground" suppressHydrationWarning>
              {stats.latestSubmission ? new Date(stats.latestSubmission).toLocaleTimeString() : 'No data'}
           </p>
         </CardContent>

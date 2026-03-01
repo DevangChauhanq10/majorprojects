@@ -78,7 +78,7 @@ export function FeedbackTable({ feedback }: FeedbackTableProps) {
                   <div className="flex">{getReviewStars(item.rating)}</div>
                 </TableCell>
                 <TableCell className="font-mono text-xs py-6">{item.userId.slice(0, 15)}...</TableCell>
-                <TableCell className="whitespace-nowrap py-6">
+                <TableCell className="whitespace-nowrap py-6" suppressHydrationWarning>
                   {new Date(item.createdAt).toLocaleDateString()}
                 </TableCell>
                 <TableCell className="py-6">
@@ -106,7 +106,7 @@ export function FeedbackTable({ feedback }: FeedbackTableProps) {
             <div className="flex justify-between items-start pr-8">
               <div className="space-y-1">
                 <DialogTitle className="text-xl">{selectedFeedback?.title}</DialogTitle>
-                <DialogDescription>
+                <DialogDescription suppressHydrationWarning>
                   Submitted on {selectedFeedback && new Date(selectedFeedback.createdAt).toLocaleDateString()} at {selectedFeedback && new Date(selectedFeedback.createdAt).toLocaleTimeString()}
                 </DialogDescription>
               </div>

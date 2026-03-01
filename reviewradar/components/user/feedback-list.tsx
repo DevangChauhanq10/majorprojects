@@ -74,7 +74,7 @@ export function FeedbackList({ feedbacks }: FeedbackListProps) {
                   <span className="text-gray-600">-</span>
                 )}
               </TableCell>
-              <TableCell className="text-gray-400 align-top py-4">
+              <TableCell className="text-gray-400 align-top py-4" suppressHydrationWarning>
                 {new Date(feedback.createdAt).toLocaleDateString()}
               </TableCell>
               <TableCell className="text-right align-top py-4">
