@@ -5,7 +5,7 @@ const isUserRoute = createRouteMatcher(['/dashboard/user(.*)']);
 const isAnalystRoute = createRouteMatcher(['/dashboard/analyst(.*)']);
 const isAdminRoute = createRouteMatcher(['/dashboard/admin(.*)']);
 
-export default clerkMiddleware(async (auth, req) => {
+export const proxy = clerkMiddleware(async (auth, req) => {
   const { userId, sessionClaims } = await auth();
   
   // Redirect to sign-in if accessing protected routes and not logged in

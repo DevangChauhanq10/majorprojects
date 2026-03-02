@@ -6,7 +6,15 @@ import { useUser } from "@clerk/nextjs";
 
 import { DemoAccountCard } from "@/components/demo-account-card";
 import { SiteHeader } from "@/components/site-header";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, PlayCircle } from "lucide-react";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export default function Home() {
   const { user } = useUser();
@@ -66,6 +74,30 @@ export default function Home() {
                 Try Demo roles
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="outline" size="lg" className="h-11 px-8 gap-2 bg-primary/5 hover:bg-primary/10 border-primary/20">
+                    <PlayCircle className="h-5 w-5" />
+                    Tutorial Video
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-4xl w-full p-0 overflow-hidden bg-black border-none">
+                  <DialogTitle className="sr-only">Tutorial Video</DialogTitle>
+                  <DialogDescription className="sr-only">Watch the tutorial video for ReviewRadar.</DialogDescription>
+                  <div className="aspect-video w-full">
+                    <iframe 
+                      src="https://player.vimeo.com/video/1169490737?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" 
+                      width="1920" 
+                      height="1080" 
+                      frameBorder="0" 
+                      allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" 
+                      referrerPolicy="strict-origin-when-cross-origin" 
+                      title="ReviewRadar Full Tutorial"
+                      className="w-full h-full"
+                    ></iframe>
+                  </div>
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
         </section>

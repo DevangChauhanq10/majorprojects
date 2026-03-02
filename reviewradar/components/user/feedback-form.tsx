@@ -25,12 +25,16 @@ export function UserFeedbackForm() {
     if (state?.success) {
       toast.success(state.message);
       formRef.current?.reset();
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      if (rating !== 0) setRating(0);
+      
+      // Reset rating without triggering another effect run for this same success state
+      if (rating !== 0) {
+        setRating(0);
+      }
     } else if (state?.message) {
       toast.error(state.message);
     }
-  }, [state, rating]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state]);
 
   return (
     <div className="rounded-lg border border-[#222] bg-[#111111] p-6 shadow-sm">
