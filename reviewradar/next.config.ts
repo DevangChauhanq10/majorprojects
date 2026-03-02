@@ -1,8 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: "standalone",
-  /* config options here */
+  experimental: {
+    serverComponentsExternalPackages: ['@prisma/client', 'prisma', '@google/generative-ai']
+  }
 };
 
 export default nextConfig;
