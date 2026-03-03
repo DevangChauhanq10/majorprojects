@@ -13,7 +13,7 @@ A comprehensive **Job Application Tracking Platform** designed to help students 
 - **🔐 Secure Authentication:** JWT-based auth with Access & Refresh tokens.
 - **🛡️ RBAC Architecture:** Scalable Role-Based Access Control logic (Student, Admin) ready for future expansion.
 - **📧 Email System:** integrated Nodemailer with Mailtrap for safe testing of automated welcome emails in a development environment.
-- **Live Demo:** https://devang-smarttrack.vercel.app/
+- **🔗 Live Demo:** https://devang-smarttrack.vercel.app/
 ---
 
 ### 2. [ReviewRadar](./reviewradar)
@@ -23,7 +23,7 @@ A full-stack customer feedback platform featuring seamless LLM integration to pr
 - **🧠 AI-Powered Insights:** Engineered an insights pipeline utilizing the Gemini 2.5 Flash API to process text reviews and automatically extract sentiment and metrics.
 - **🔐 Secure Authentication:** Implemented secure API routes and authentication flows using Clerk.
 - **🗄️ Scalable Database:** Designed robust schemas using Prisma ORM and PostgreSQL for efficient structured data querying.
-
+- **🔗 Live Demo:** https://majorprojects-nu.vercel.app/
 ---
 
 ## 🛠 Tech Stack Overview
