@@ -130,6 +130,20 @@ const Dashboard = () => {
         }
     };
 
+    const handleToggleStageStatus = async (appId, stageId, currentStatus) => {
+        const statuses = ['upcoming', 'pending', 'cleared', 'rejected'];
+        const currentIndex = statuses.indexOf(currentStatus);
+        const nextStatus = statuses[(currentIndex + 1) % statuses.length];
+
+        try {
+            const { data } = await API.put(`/applications/${appId}/stage/${stageId}`, { status: nextStatus });
+            setApplications(applications.map(app => app._id === appId ? data : app));
+        } catch (error) {
+            console.error('Error toggling stage status', error);
+            showMessage('error', 'Failed to update stage status');
+        }
+    };
+
     const statusCounts = applications.reduce((acc, app) => {
         acc[app.status] = (acc[app.status] || 0) + 1;
         return acc;
@@ -349,6 +363,7 @@ const Dashboard = () => {
                                     newStage={newStage}
                                     setNewStage={setNewStage}
                                     onAddStage={handleAddStage}
+                                    onToggleStageStatus={handleToggleStageStatus}
                                 />
                             ))
                         )}
@@ -439,7 +454,8 @@ const ApplicationCard = ({
     setAddingStageId,
     newStage,
     setNewStage,
-    onAddStage
+    onAddStage,
+    onToggleStageStatus
 }) => {
     const isEditing = editingId === app._id;
     const isAddingStage = addingStageId === app._id;
@@ -510,14 +526,19 @@ const ApplicationCard = ({
                         <div className="mb-4 pt-4 border-t border-border border-dashed">
                              <div className="flex flex-wrap gap-2">
                                 {app.stages.map((stage, i) => (
-                                    <div key={i} className={`flex items-center space-x-2 text-xs px-2.5 py-1 rounded border ${
+                                    <div 
+                                        key={stage._id || i} 
+                                        onClick={() => onToggleStageStatus(app._id, stage._id, stage.status)}
+                                        className={`flex items-center space-x-2 text-xs px-2.5 py-1 rounded border cursor-pointer hover:opacity-80 transition-opacity ${
                                         stage.status === 'cleared' ? 'bg-green-50/50 border-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300 dark:border-green-800' :
                                         stage.status === 'rejected' ? 'bg-red-50/50 border-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300 dark:border-red-800' :
+                                        stage.status === 'pending' ? 'bg-yellow-50/50 border-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-300 dark:border-yellow-800' :
                                         'bg-muted/30 border-border text-muted-foreground dark:bg-secondary/50 dark:text-gray-300'
                                     }`}>
                                         <span className="font-medium">{stage.name}</span>
                                         {stage.status === 'cleared' && <CheckCircle size={10} />}
                                         {stage.status === 'rejected' && <XCircle size={10} />}
+                                        {stage.status === 'pending' && <Clock size={10} />}
                                     </div>
                                 ))}
                             </div>

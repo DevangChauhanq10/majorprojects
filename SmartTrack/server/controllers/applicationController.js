@@ -39,7 +39,7 @@ const getApplications = asyncHandler(async (req, res) => {
 });
 
 const createApplication = asyncHandler(async (req, res) => {
-  const { companyName, role, oaLink, appliedDate } = req.body;
+  const { companyName, role, oaLink, appliedDate, notes } = req.body;
 
   const application = new Application({
     student: req.user.id,
@@ -47,6 +47,7 @@ const createApplication = asyncHandler(async (req, res) => {
     role,
     oaLink,
     appliedDate,
+    notes,
   });
 
   const createdApplication = await application.save();
@@ -123,4 +124,31 @@ const updateApplicationStage = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { getApplications, createApplication, updateApplication, deleteApplication, updateApplicationStage };
+const editApplicationStage = asyncHandler(async (req, res) => {
+  const { id, stageId } = req.params;
+  const { status, name, notes, date } = req.body;
+
+  const application = await Application.findById(id);
+
+  if (application) {
+    const stage = application.stages.id(stageId);
+    if (!stage) {
+      return res.status(404).json({ message: 'Stage not found' });
+    }
+
+    if (status) stage.status = status;
+    if (name) stage.name = name;
+    if (notes !== undefined) stage.notes = notes;
+    if (date) stage.date = date;
+
+    if (status === 'rejected') application.status = 'rejected';
+    if (stage.name.toLowerCase() === 'offer' && status === 'cleared') application.status = 'offer';
+
+    await application.save();
+    res.json(application);
+  } else {
+    res.status(404).json({ message: 'Application not found' });
+  }
+});
+
+module.exports = { getApplications, createApplication, updateApplication, deleteApplication, updateApplicationStage, editApplicationStage };
