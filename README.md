@@ -13,7 +13,7 @@ A comprehensive **Job Application Tracking Platform** designed to help students 
 - **🔐 Secure Authentication:** JWT-based auth with Access & Refresh tokens.
 - **🛡️ RBAC Architecture:** Scalable Role-Based Access Control logic (Student, Admin) ready for future expansion.
 - **📧 Email System:** integrated Nodemailer with Mailtrap for safe testing of automated welcome emails in a development environment.
-- **🔗 Live Demo:** https://devang-smarttrack.vercel.app/
+- **🔗 Live Demo:** https://smarttrack-chi.vercel.app/
 ---
 
 ### 2. [ReviewRadar](./reviewradar)
