@@ -155,3 +155,26 @@ reviewradar/
 ├── package.json       # Project dependencies and scripts
 └── tailwind.config.ts # Tailwind CSS settings
 ```
+## 👨‍💻 Author
+
+**Devang Chauhan**
+
+- GitHub: [@devangchauhanq10](https://github.com/devangchauhanq10)
+- LinkedIn: [Devang Chauhan](https://www.linkedin.com/in/devang-chauhan-8859703a6/)
+- Email: dccule@gmail.com
+
+---
+
+## 🙏 Acknowledgments
+
+- [React](https://react.dev/) - UI library
+- [Express](https://expressjs.com/) - Web framework
+- [MongoDB](https://www.mongodb.com/) - Database
+- [Tailwind CSS](https://tailwindcss.com/) - CSS framework
+- [Lucide Icons](https://lucide.dev/) - Icon library
+
+---
+
+<div align="center">
+
+⭐ Star this repo if you find it helpful. Thank you ~ Devang Chauhan
