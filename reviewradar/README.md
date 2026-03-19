@@ -138,22 +138,78 @@ npm start
 
 ```text
 reviewradar/
-├── app/               # Next.js App Router (Pages, Layouts, API Routes)
-│   ├── actions/       # Server Actions (Feedback, AI generation)
-│   ├── api/           # API endpoints (if any)
-│   ├── dashboard/     # Protected Dashboard layout and pages
-│   └── ...
+├── app/               # Next.js App Router (Pages, Layouts, Server Actions)
+│   ├── actions/
+│   │   ├── admin.ts
+│   │   ├── analyst.ts
+│   │   ├── email.tsx
+│   │   ├── feedback.ts
+│   │   └── generate-insights.ts
+│   ├── api/
+│   │   └── setup-role/
+│   │       └── route.ts
+│   ├── dashboard/
+│   │   ├── admin/
+│   │   │   └── page.tsx
+│   │   ├── analyst/
+│   │   │   └── page.tsx
+│   │   ├── layout.tsx
+│   │   └── user/
+│   │       └── page.tsx
+│   ├── favicon.ico
+│   ├── globals.css
+│   ├── layout.tsx
+│   ├── page.tsx
+│   └── submit-feedback/
+│       └── page.tsx
 ├── components/        # Reusable React components
+│   ├── admin/
+│   │   ├── ActivityFeed.tsx
+│   │   ├── FeedbackModeration.tsx
+│   │   ├── SystemStats.tsx
+│   │   └── UserManagementTable.tsx
+│   ├── analyst/
+│   │   ├── ai-insights.tsx
+│   │   ├── feedback-filters.tsx
+│   │   ├── feedback-table.tsx
+│   │   ├── pagination-controls.tsx
+│   │   └── stats-cards.tsx
+│   ├── emails/
+│   │   ├── critical-alert.tsx
+│   │   ├── feedback-confirmation.tsx
+│   │   └── weekly-digest.tsx
 │   ├── ui/            # Shadcn UI components
-│   ├── admin/         # Admin-specific components
-│   └── analyst/       # AI Analytics components
+│   ├── demo-account-card.tsx
+│   ├── feedback-form.tsx
+│   ├── role-button.tsx
+│   ├── site-header.tsx
+│   ├── theme-provider.tsx
+│   └── user/
+│       ├── dashboard-header.tsx
+│       ├── empty-state.tsx
+│       ├── feedback-form.tsx
+│       └── feedback-list.tsx
+├── lib/
+│   ├── prisma.ts
+│   ├── resend.ts
+│   ├── utils.ts
+│   └── validations.ts
 ├── prisma/            # Database schema & migrations
-│   └── schema.prisma  # Prisma configuration
+│   ├── migrations/
+│   └── schema.prisma
 ├── public/            # Static assets
-├── .env               # Environment variables (ignored in git)
-├── next.config.ts     # Next.js configurations
-├── package.json       # Project dependencies and scripts
-└── tailwind.config.ts # Tailwind CSS settings
+├── scripts/
+├── types/
+│   └── globals.d.ts
+├── components.json
+├── eslint.config.mjs
+├── next.config.ts
+├── package-lock.json
+├── package.json
+├── postcss.config.mjs
+├── prisma.config.ts
+├── proxy.ts
+└── tsconfig.json
 ```
 ## 👨‍💻 Author
 
