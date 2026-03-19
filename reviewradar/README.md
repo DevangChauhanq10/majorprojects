@@ -165,15 +165,6 @@ reviewradar/
 
 ---
 
-## 🙏 Acknowledgments
-
-- [React](https://react.dev/) - UI library
-- [Express](https://expressjs.com/) - Web framework
-- [MongoDB](https://www.mongodb.com/) - Database
-- [Tailwind CSS](https://tailwindcss.com/) - CSS framework
-- [Lucide Icons](https://lucide.dev/) - Icon library
-
----
 
 <div align="center">
 
