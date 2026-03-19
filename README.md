@@ -18,7 +18,7 @@ A comprehensive **Job Application Tracking Platform** designed to help students 
 
 ### 2. [ReviewRadar](./reviewradar)
 A full-stack customer feedback platform featuring seamless LLM integration to process unstructured review data. Leverages advanced AI capabilities to automatically transform customer text into actionable business intelligence.
-- **Stack:** Next.js, PostgreSQL, Prisma, Clerk, Gemini API
+- **Stack:** Next.js, PostgreSQL, Prisma, Clerk, Gemini API (gemini 2.5 flash)
 - **Status:** ✅ Active Development
 - **🧠 AI-Powered Insights:** Engineered an insights pipeline utilizing the Gemini 2.5 Flash API to process text reviews and automatically extract sentiment and metrics.
 - **🔐 Secure Authentication:** Implemented secure API routes and authentication flows using Clerk.
