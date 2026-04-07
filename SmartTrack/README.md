@@ -23,6 +23,7 @@ A full-stack MERN application for tracking job applications, managing placement 
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Usage](#usage)
+- [Screenshots](#screenshots)
 - [API Documentation](#api-documentation)
 - [Project Structure](#project-structure)
 
