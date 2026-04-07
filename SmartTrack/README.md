@@ -243,7 +243,38 @@ npm run preview
 ```
 
 ---
+---
 
+## <a id="screenshots"></a>📸 Screenshots
+
+Here are some previews of the SmartTrack application:
+
+### 🏠 Home Page
+![Home Page](./screenshots/home.png)
+
+### 🏠 Home Page(dark)
+![Home Page](./screenshots/homedark.png)
+
+### 📋 Dashboard
+![Dashboard](./screenshots/dashboard.png)
+
+### 📋 Dashboard(dark)
+![Dashboard](./screenshots/dashboarddark.png)
+
+### 👤 Application
+![Profile](./screenshots/application.png)
+
+### 👤 Application(dark)
+![Profile](./screenshots/applicationdark.png)
+
+### 👤 Profile Page
+![Profile](./screenshots/profile.png)
+
+### 👤 Profile Page(dark)
+![Profile](./screenshots/profiledark.png)
+
+> 📌 Add your screenshots inside a `/screenshots` folder in your project root and update filenames accordingly.
+---
 ## <a id="api-documentation"></a>📡 API Documentation
 
 ### Authentication Endpoints
