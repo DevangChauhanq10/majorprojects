@@ -268,7 +268,7 @@ Dashboard(Dark Mode)
 ![Dashboard](./Screenshots/dashboarddark.png)
 
 Application
-![Application](./Screenshots/application.png)
+![Application](./Screenshots/applicationpage.png)
 
 Profile Page
 ![Profile](./Screenshots/profile.png)
