@@ -255,22 +255,25 @@ Home Page
 Home Page(Dark Mode)
 ![Home Page](./screenshots/homedark.png)
 
-📋 Dashboard
+Login Page
+![Profile](./screenshots/login.png)
+
+Login Page(Dark Mode)
+![Profile](./screenshots/logindark.png)
+
+Dashboard
 ![Dashboard](./screenshots/dashboard.png)
 
-📋 Dashboard(Dark Mode)
+Dashboard(Dark Mode)
 ![Dashboard](./screenshots/dashboarddark.png)
 
-👤 Application
+Application
 ![Application](./screenshots/application.png)
 
-👤 Application(Dark Mode)
-![Application](./screenshots/applicationdark.png)
-
-👤 Profile Page
+Profile Page
 ![Profile](./screenshots/profile.png)
 
-👤 Profile Page(Dark Mode)
+Profile Page(Dark Mode)
 ![Profile](./screenshots/profiledark.png)
 
 > 📌 Add your screenshots inside a `/screenshots` folder in your project root and update filenames accordingly.
