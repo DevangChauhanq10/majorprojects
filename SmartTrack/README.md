@@ -250,31 +250,31 @@ npm run preview
 Here are some previews of the SmartTrack application:
 
 Home Page
-![Home Page](./screenshots/home.png)
+![Home Page](./Screenshots/home.png)
 
 Home Page(Dark Mode)
-![Home Page](./screenshots/homedark.png)
+![Home Page](./Screenshots/homedark.png)
 
 Login Page
-![Profile](./screenshots/login.png)
+![Profile](./Screenshots/login.png)
 
 Login Page(Dark Mode)
-![Profile](./screenshots/logindark.png)
+![Profile](./Screenshots/logindark.png)
 
 Dashboard
-![Dashboard](./screenshots/dashboard.png)
+![Dashboard](./Screenshots/dashboard.png)
 
 Dashboard(Dark Mode)
-![Dashboard](./screenshots/dashboarddark.png)
+![Dashboard](./Screenshots/dashboarddark.png)
 
 Application
-![Application](./screenshots/application.png)
+![Application](./Screenshots/application.png)
 
 Profile Page
-![Profile](./screenshots/profile.png)
+![Profile](./Screenshots/profile.png)
 
 Profile Page(Dark Mode)
-![Profile](./screenshots/profiledark.png)
+![Profile](./Screenshots/profiledark.png)
 
 > 📌 Add your screenshots inside a `/screenshots` folder in your project root and update filenames accordingly.
 ---
