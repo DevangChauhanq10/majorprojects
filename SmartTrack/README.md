@@ -276,7 +276,7 @@ Profile Page
 Profile Page(Dark Mode)
 ![Profile](./Screenshots/profiledark.png)
 
-> 📌 Add your screenshots inside a `/screenshots` folder in your project root and update filenames accordingly.
+
 ---
 ## <a id="api-documentation"></a>📡 API Documentation
 
@@ -423,39 +423,43 @@ Content-Type: application/json
 MERN/
 ├── client/                 # Frontend React application
 │   ├── src/
-│   │   ├── api/           # API configuration
-│   │   ├── components/    # Reusable components
-│   │   ├── context/       # React context (Auth)
+│   │   ├── api/            # API configuration
+│   │   ├── components/     # Reusable components
+│   │   ├── context/        # React context (Auth)
 │   │   ├── pages/          # Page components
 │   │   │   ├── Dashboard.jsx
 │   │   │   ├── Login.jsx
 │   │   │   ├── Register.jsx
 │   │   │   └── Profile.jsx
-│   │   ├── App.jsx        # Main app component
-│   │   └── main.jsx       # Entry point
+│   │   ├── App.jsx         # Main app component
+│   │   └── main.jsx        # Entry point
 │   ├── package.json
 │   └── vite.config.js
 │
 ├── server/                 # Backend Node.js application
-│   ├── config/            # Configuration files
-│   │   └── db.js          # MongoDB connection
-│   ├── controllers/       # Route controllers
+│   ├── config/             # Configuration files
+│   │   └── db.js           # MongoDB connection
+│   ├── controllers/        # Route controllers
 │   │   ├── userController.js
 │   │   └── applicationController.js
-│   ├── middleware/        # Custom middleware
+│   ├── middleware/         # Custom middleware
 │   │   ├── authMiddleware.js
 │   │   └── error.middleware.js
-│   ├── models/            # MongoDB models
+│   ├── models/             # MongoDB models
 │   │   ├── User.js
 │   │   └── Application.js
-│   ├── routes/            # API routes
+│   ├── routes/             # API routes
 │   │   ├── userRoutes.js
 │   │   └── applicationRoutes.js
-│   ├── utils/             # Utility functions
-│   ├── index.js           # Server entry point
+│   ├── utils/              # Utility functions
+│   ├── index.js            # Server entry point
 │   └── package.json
 │
+├── Screenshots/            # Screenshots folder
+│
 └── README.md
+
+
 ```
 
 ## 👨‍💻 Author
